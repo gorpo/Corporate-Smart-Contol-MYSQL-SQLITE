@@ -2,7 +2,7 @@
 
 //chat_request.php
 
-include('Db.php');
+include('../../../../databases/conexao_chat.php');
 
 $object = new Db;
 

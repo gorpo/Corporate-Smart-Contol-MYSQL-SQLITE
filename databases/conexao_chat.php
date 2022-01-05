@@ -19,7 +19,7 @@ class Db
 	{
 
 		
-		$this->connect = new PDO("mysql:host=localhost;dbname=csc_chat", "root", "");  //Define Database name in dbname
+		$this->connect = new PDO("mysql:host=localhost;dbname=site", "root", "");  //Define Database name in dbname
 	
 		date_default_timezone_set('America/Sao_Paulo');
 

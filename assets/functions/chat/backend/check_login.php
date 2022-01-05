@@ -2,7 +2,7 @@
 
 //check_login.php
 
-include('Db.php');
+include('../../../../databases/conexao_chat.php');
 
 $object = new Db;
 
@@ -10,6 +10,9 @@ $data = array();
 
 if($object->is_login())
 {
+	//---------------
+	//$object = new PDO('sqlite:../../../../databases/chat.db');
+
 	$object->query = "
 	SELECT * FROM user_cpmvj 
 	WHERE user_id = '".$_SESSION['user_id']."'

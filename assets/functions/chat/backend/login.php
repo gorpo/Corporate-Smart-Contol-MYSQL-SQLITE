@@ -5,7 +5,7 @@
 
 if(isset($_POST["user_email"]))
 {
-	include('Db.php');
+	include('../../../../databases/conexao_chat.php');
 
 	$object = new Db;
 

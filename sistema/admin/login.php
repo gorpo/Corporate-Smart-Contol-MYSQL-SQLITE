@@ -2,6 +2,7 @@
 <?php
 session_start();
 
+require '../../databases/conexao_mysql.php';
 //variaveis 
 $ip = $_SERVER['REMOTE_ADDR']; 
 $email =  $_SESSION['email_login'];
@@ -11,7 +12,7 @@ $token = $_SESSION['token'];
 
 
 // Cria um cookie chamado token com o valor 'a3793243d083464baeff0bf59c24a56a'
-setcookie('token', 'a3793243d083464baeff0bf59c24a56a');
+setcookie('token', $token);
 // Cria o mesmo cookie acima só que irá durar cinco dias
 //setcookie('token', 'a3793243d083464baeff0bf59c24a56a', (time() + (5 * 24 * 3600)));
 // Cria o novo cookie para durar seis horas
@@ -26,7 +27,7 @@ if(empty($email) || empty($senha)) {
 
 
 //verifica o usuario
-$pdo = new PDO('sqlite:../../databases/site.db');
+$pdo = Database::conectar();
 $sql = $pdo->prepare("SELECT * FROM usuarios ");
 $sql->execute();
 $info = $sql->fetchAll();
@@ -171,7 +172,7 @@ foreach($info as $key => $row){
 
 
 			    //pega os dados no banco principal para gravar no banco do usuario
-			    $pdo = new PDO('sqlite:../../databases/site.db');
+			    $pdo = Database::conectar();
 			    $sql = $pdo->prepare("SELECT * FROM `usuarios` WHERE email = '$email'  ");
 			    $sql->execute();
 			    $info = $sql->fetchAll();
@@ -189,7 +190,7 @@ foreach($info as $key => $row){
 			        $imagem_cadastrada = $row['imagem'];
 			        $data_cadastrada = $row['cadastro']; 
 			        $token_cadastrado = $row['token']; 
-			    }
+			    }Database::desconectar();
 
 
 			    if($email_cadastrado == $email){
@@ -207,21 +208,7 @@ foreach($info as $key => $row){
 
 					    //se a db esta vazia ele cadastra somente o adm
 					    if($verifica_db == '0'){
-					    	$pdo = new PDO('sqlite:../../databases/'.$email.'.db');
-					            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					            $sql = $pdo->prepare("INSERT INTO `usuarios` (`nome`,`sobrenome`,`usuario`, `telefone`, `email`,`email_cliente`, `senha`, `nivel`, `prazo`,`imagem`, `cadastro`, `token`) VALUES 
-					            (?,?,?,?,?,?,?,?,?,?,?,?);");
-					            $sql->execute(array($nome_cadastrado,$sobrenome_cadastrado, $usuario_cadastrado, $telefone_cadastrado, $email_cadastrado,$email_cliente_cadastrado, $senha_cadastrada, $nivel_cadastrado, $prazo_cadastrado, $imagem_cadastrada, $data_cadastrada, $token_cadastrado));
-
-					            //insere o usuario no banco de dados do chat
-								$pdo = new PDO('sqlite:../../databases/chat.db');
-								$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-								$sql = $pdo->prepare("INSERT INTO `user_cpmvj` ( `user_first_name`, `user_last_name`, `user_email`, `user_password`, `user_image`, `user_status`,`user_datetime`, `user_verification_code`) VALUES 
-								(?,?,?,?,?,?,?,?);");
-								$sql->execute(array( $nome_cadastrado, $sobrenome_cadastrado, $email_cadastrado, $senha_cadastrada, $imagem_cadastrada, 'Offline', $data_cadastrada, bin2hex(random_bytes(16))));
-					            
-					      
-					            //cria a tabela de login que armazena dados como ip dos usuarios caso nao exista
+					    		//cria a tabela de login que armazena dados como ip dos usuarios caso nao exista
 							    $pdo = new PDO('sqlite:../../databases/'.$email.'.db');
 							    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 							    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `user_$usuario_cadastrado` (
@@ -254,9 +241,26 @@ foreach($info as $key => $row){
 								  `data_atual` datetime DEFAULT NULL
 							    );");
 							    $sql->execute();
+							    
+					    		//insere o usuario no banco de dados do chat
+								$pdo = Database::conectar();
+								$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+								$sql = $pdo->prepare("INSERT INTO `user_cpmvj` ( `user_first_name`, `user_last_name`, `user_email`, `user_password`, `user_image`, `user_status`,`user_datetime`, `user_verification_code`) VALUES 
+								(?,?,?,?,?,?,?,?);");
+								$sql->execute(array( $nome_cadastrado, $sobrenome_cadastrado, $email_cadastrado, $senha_cadastrada, $imagem_cadastrada, 'Offline', $data_cadastrada, bin2hex(random_bytes(16))));
+								Database::desconectar();
 
+
+					    		$pdo = new PDO('sqlite:../../databases/'.$email.'.db');
+					            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					            $sql = $pdo->prepare("INSERT INTO `usuarios` (`nome`,`sobrenome`,`usuario`, `telefone`, `email`,`email_cliente`, `senha`, `nivel`, `prazo`,`imagem`, `cadastro`, `token`) VALUES 
+					            (?,?,?,?,?,?,?,?,?,?,?,?);");
+					            $sql->execute(array($nome_cadastrado,$sobrenome_cadastrado, $usuario_cadastrado, $telefone_cadastrado, $email_cadastrado,$email_cliente_cadastrado, $senha_cadastrada, $nivel_cadastrado, $prazo_cadastrado, $imagem_cadastrada, $data_cadastrada, $token_cadastrado));
+
+
+					            
 							    //verifica a data de cadastro no banco de dados
-								$pdo = new PDO('sqlite:../../databases/site.db');
+								$pdo = Database::conectar();
 								$sql = $pdo->prepare("SELECT cadastro FROM usuarios WHERE email = '$email' ");
 								$sql->execute();
 								$info = $sql->fetch();

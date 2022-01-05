@@ -17,14 +17,10 @@ class Db
 
 	public function __construct()
 	{
-
-		
-		$this->connect = new PDO('sqlite:../../../../databases/chat.db');  //Define Database name in dbname
-	
+		//foi modificado para aceitar o sqlite
+		$this->connect = new PDO("mysql:host=localhost;dbname=site", "root", ""); 
+		//$this->connect = new PDO('sqlite:../../../../databases/chat.db'); 
 		date_default_timezone_set('America/Sao_Paulo');
-
-		
-
 		$this->now = date("Y-m-d H:i:s",  STRTOTIME(date('h:i:sa')));
 	}
 
@@ -43,7 +39,9 @@ class Db
 
 	function row_count()
 	{
+		//foi modificado para aceitar o SQLITE
 		return $this->statement->rowCount();
+		//return 1;
 	}
 
 	function statement_result()

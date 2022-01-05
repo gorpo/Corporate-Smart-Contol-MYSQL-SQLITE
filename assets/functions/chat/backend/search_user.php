@@ -4,7 +4,7 @@
 
 if(isset($_POST["query"]))
 {
-	include('Db.php');
+	include('../../../../databases/conexao_chat.php');
 
 	$object = new Db;
 
@@ -41,6 +41,8 @@ if(isset($_POST["query"]))
 
 		$object->execute($t_data1);
 
+		//antes era - foi modificado para aceitar o sqlite
+		//if($object->row_count() == 0)
 		if($object->row_count() == 0)
 		{
 

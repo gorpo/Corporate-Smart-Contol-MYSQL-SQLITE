@@ -3,23 +3,27 @@
 
 <?php
 session_start();
+require '../../../../databases/conexao_mysql.php';
+
 $email =  $_SESSION['email_login'];
 $senha = $_SESSION['senha_login'];
 $token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
-
-//verifica o email do cliente para por no usuario e identificar o login dele
 $email_sessao = $_SESSION['email'];
 $email_cliente = $_SESSION['email_cliente'];
+
 //se nao logado sai do sistema
 if(!$_SESSION['nome']) {
   header('Location: ../../index.php');
   exit();
 }
 
-
-
-
+// Cria a conexão com o banco de dados
+try {
+    $conexao = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
+} catch (PDOException $erro) {
+    echo "<p class=\"bg-danger\">Erro na conexão:" . $erro->getMessage() . "</p>";
+}
 
 // Verificar se foi enviando dados via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -37,15 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
     $usuario = (isset($_GET["usuario"]) && $_GET["usuario"] != null) ? $_GET["usuario"] : "";
 }
-
-
-// Cria a conexão com o banco de dados
-try {
-    $conexao = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
-} catch (PDOException $erro) {
-    echo "<p class=\"bg-danger\">Erro na conexão:" . $erro->getMessage() . "</p>";
-}
-
 
 
 // Bloco If que Salva os dados no Banco - atua como Create e Update
@@ -70,14 +65,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
         $stmt->bindParam(10 , $token);
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
-                //insere o usuario no banco de dados do chat
-                $pdo = new PDO('sqlite:../../../../databases/chat.db');
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = $pdo->prepare("INSERT INTO `user_cpmvj` ( `user_first_name`, `user_last_name`, `user_email`, `user_password`, `user_image`, `user_status`,`user_datetime`, `user_verification_code`) VALUES 
-                (?,?,?,?,?,?,date('now'),?);");
-                $sql->execute(array( $nome, $sobrenome, $email, $senha, $imagem, 'Offline',  bin2hex(random_bytes(16))));
-                $pdo = 
-
                 //cria o banco de dados das retiradas do usuario----------------
                   $pdo = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
                   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -97,16 +84,25 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
                   data_atual datetime DEFAULT NULL
                    ) "); 
                   $sql->execute();
+
                   $pdo = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
                   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                   $sqla = $pdo->prepare("CREATE TABLE IF NOT EXISTS user_$usuario (id INTEGER PRIMARY KEY   AUTOINCREMENT,usuario VARCHAR(300), senha VARCHAR(300), ip VARCHAR(70), data_atual datetime, cor VARCHAR(300) )");
                   $sqla->execute();
 
+                  //insere o usuario no banco de dados do chat
+                $pdo = Database::conectar();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = $pdo->prepare("INSERT INTO `user_cpmvj` ( `user_first_name`, `user_last_name`, `user_email`, `user_password`, `user_image`, `user_status`,`user_datetime`, `user_verification_code`) VALUES 
+                (?,?,?,?,?,?,now(),?);");
+                $sql->execute(array( $nome, $sobrenome, $email, $senha, $imagem, 'Offline',  bin2hex(random_bytes(16))));
+                $pdo = Database::desconectar();
 
-                  //envia o email
+
+
+
+                //envia o email
                 header('Location: envia_email.php?email='.$email.'&nome='.$nome.' &token='.$token.' ');
-                
-
             } else {
                 echo "<p class=\"bg-danger\">Erro ao tentar efetivar cadastro</p>";
             }
@@ -120,7 +116,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
 
 
 
-
+//se o email foi enviado 
 if(isset($_GET['envio'])){
     echo  "<script>alert('Email enviado com Sucesso!');</script>";
 }
@@ -182,10 +178,20 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
 // Bloco if utilizado pela etapa Delete
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "" && $usuario != "" ) {
     try {
+        //deleta as tabelas do usuario
         $stmt = $conexao->prepare("DROP TABLE user_$usuario");
         $stmt->execute();
         $stmt = $conexao->prepare("DROP TABLE retiradas_$usuario");
         $stmt->execute();
+        //deleta o usuario do chat
+        $pdo = Database::conectar();
+        $email_del = $_GET['email'];
+        $sql = $pdo->prepare("DELETE FROM user_cpmvj WHERE user_email = '$email_del'");
+        $sql->execute();
+        Database::desconectar();
+
+
+
 
         $stmt = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
@@ -626,7 +632,7 @@ include('menu.php');
                         <td class="coluna2" data-label="Cadastro:"><?php echo $rs->cadastro; ?></td>
                         <td class="coluna2" data-label="Nivel:"><?php echo $rs->nivel; ?></td>
                         <td  class="coluna2" data-label="Banir:">
-                         <a href="?act=del&id=<?php echo $rs->id; ?>&usuario=<?php echo $rs->usuario; ?>" class="botaoIcones" ><i class="fas fa-trash " aria-hidden="true"></i> Banir Usuário</a>
+                         <a href="?act=del&id=<?php echo $rs->id; ?>&usuario=<?php echo $rs->usuario; ?>&email=<?php echo $rs->email; ?>" class="botaoIcones" ><i class="fas fa-trash " aria-hidden="true"></i> Banir Usuário</a>
                         </td>
                     </tr>
                     <?php
