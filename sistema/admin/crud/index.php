@@ -417,6 +417,7 @@ include('../../../assets/customizar/customiza.php');
                   $produtos_em_baixa = array();
                   $tamanho_em_baixa = array();
                   $cor_em_baixa = array();
+                  $quantidade_em_baixa = array();
                   foreach($pdo->query($sql)as $row){
                       $produto =  $row['produto']; 
                       $tamanho =  $row['tamanho']; 
@@ -427,14 +428,15 @@ include('../../../assets/customizar/customiza.php');
                         $produtos_em_baixa[]  =  $produto;
                         $tamanho_em_baixa[]  =  $tamanho;
                         $cor_em_baixa[]  =  $cor;
+                        $quantidade_em_baixa[]  =  $quantidade;
 
                       }
                       
                   }
                 $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
                 $stmt = $pdo->query('SELECT * FROM usuarios');
-                $row_count = $stmt->rowCount();
-                foreach(range(0,$row_count -1) as $i){
+                $row_count = $stmt->fetchColumn();
+                foreach(range(0,$row_count[0] -1) as $i){
                   if($i > 0){
                   echo '<br>';
                   }
@@ -452,14 +454,14 @@ function produtos_em_baixa() {
     var js_array = confirm([<?php
      //echo '"'.implode('\n', $produtos_em_baixa ).'"';
       $arr = array();
-      for ($index = 0; $index < count($produtos_em_baixa); $index++) {
-          $arr[$index] = $produtos_em_baixa[$index]." | ".$tamanho_em_baixa[$index]." | ".$cor_em_baixa[$index]." | ".$quantidade_em_baixa[$index];
+
+      for ($i = 0; $i < count($produtos_em_baixa); $i++) {
+          $arr[$i] = $produtos_em_baixa[$i]." | ".$tamanho_em_baixa[$i]." | ".$cor_em_baixa[$i]." | ".$quantidade_em_baixa[$i];
       }
       echo '"'.implode('\n', $arr ).'"';
       ?>]);
     }
 </script>
-
 
 
 <!-- =========================================INFORMAÇÕES DO ESTOQUE============================== -->           

@@ -171,6 +171,10 @@ foreach($info as $key => $row){
 			    $sql->execute();
 
 
+			    include('../../databases/dump_produtos.php');
+
+
+
 			    //pega os dados no banco principal para gravar no banco do usuario
 			    $pdo = Database::conectar();
 			    $sql = $pdo->prepare("SELECT * FROM `usuarios` WHERE email = '$email'  ");
@@ -241,7 +245,7 @@ foreach($info as $key => $row){
 								  `data_atual` datetime DEFAULT NULL
 							    );");
 							    $sql->execute();
-							    
+
 					    		//insere o usuario no banco de dados do chat
 								$pdo = Database::conectar();
 								$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
