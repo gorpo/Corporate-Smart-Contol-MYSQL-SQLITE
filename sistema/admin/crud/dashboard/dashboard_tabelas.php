@@ -10,9 +10,6 @@ if(!$_SESSION['nome']) {
 $email =  $_SESSION['email_login'];
 $senha = $_SESSION['senha_login'];
 $token = $_SESSION['token'];
-//inclui o arquivo de ../conexao com banco de dados
-
-
 $usuario = $_SESSION['nome'];
 
 

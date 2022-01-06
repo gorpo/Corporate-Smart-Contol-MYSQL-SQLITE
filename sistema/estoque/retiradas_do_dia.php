@@ -8,13 +8,17 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 
 
 
 ?>
+
 
 
 
@@ -136,7 +140,7 @@ $usuario = $_SESSION['nome'];
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -153,7 +157,7 @@ $usuario = $_SESSION['nome'];
     <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -193,13 +197,13 @@ include('../../assets/customizar/customiza.php');
             <select name="lista_usuarios" onchange="submit();">
               <option value="0">Selecione:</option>
               <?php  
-                //require '../../../databases/database.php';
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                //
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                     echo '<option value="'.$row['usuario'].'">'.$row['usuario'].'</option>';
                     };
-                     Database::desconectar();
+                     
                 ?>
             </select></form></h3>
 
@@ -214,7 +218,7 @@ include('../../assets/customizar/customiza.php');
               if(isset($_GET['lista_usuarios'])){
                 $pega_usuario =  $_GET['lista_usuarios'];
                 $usuario_selecionado = "retiradas_".$_GET['lista_usuarios']. "";
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM $usuario_selecionado WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = CURDATE() ORDER BY id DESC ";
                 foreach($pdo->query($sql)as $row){
                 echo '<li class="item">
@@ -224,9 +228,9 @@ include('../../assets/customizar/customiza.php');
                                 </div>
                               </li>';
                                   }
-                  Database::desconectar();
+                  
                 }else{
-              $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+              $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM retiradas_$usuario WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = CURDATE()  ORDER BY id DESC ";
               foreach($pdo->query($sql)as $row){
                 echo '<li class="item">
@@ -235,7 +239,7 @@ include('../../assets/customizar/customiza.php');
                   <span class="product-description">'.substr($row['produto'],0,999).' | Tamanho:'.$row['tamanho'].' | Cor:'.$row['cor'].' | Lote:'.$row['lote'].'| Quantidade:'.$row['quantidade'].'</span>
                 </div>
               </li>';}
-                  Database::desconectar();
+                  
                 }
                 ?>  
                 </ul></div>              

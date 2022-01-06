@@ -8,8 +8,11 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 
 
@@ -133,7 +136,7 @@ $usuario = $_SESSION['nome'];
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -150,7 +153,7 @@ $usuario = $_SESSION['nome'];
       <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -189,12 +192,12 @@ include('../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Total de Produtos Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT produto FROM produtos";
                   $contador_produtos = 0;
                   foreach($pdo->query($sql)as $row){
                     $contador_produtos = $contador_produtos +1;
-                  }Database::desconectar();
+                  }
                   echo $contador_produtos;
                   ?> </span>
               </div>
@@ -208,7 +211,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href="" onclick="produtos_em_baixa()" style="color: inherit;">Total de Produtos em Baixa</a></span>
                 <span class="info-box-number">
                   <?php
-              $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+              $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM produtos";
               $contador = 0;
               $produtos_em_baixa = array();
@@ -225,7 +228,7 @@ include('../../assets/customizar/customiza.php');
                     $tamanho_em_baixa[]  =  $tamanho;
                     $cor_em_baixa[]  =  $cor;
                   }
-                  Database::desconectar();
+                  
               }
               echo $contador;
               //echo json_encode($produtos_em_baixa, JSON_UNESCAPED_UNICODE);
@@ -253,7 +256,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"> <a href="" onclick="produtos_acima_estoque()"  style="color: inherit;">Total de Produtos Acima do Estoque </a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_acima_estoque = array();
@@ -270,7 +273,7 @@ include('../../assets/customizar/customiza.php');
                           $tamanho_acima_estoque[]  =  $tamanho;
                           $cor_acima_estoque[]  =  $cor;
                         }
-                        Database::desconectar();
+                        
                     }
                     echo $contador;
                     //echo json_encode($produtos_acima_estoque, JSON_UNESCAPED_UNICODE);
@@ -298,7 +301,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_falta()" style="color: inherit;">Total de Produtos em Falta</a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_em_falta = array();
@@ -315,7 +318,7 @@ include('../../assets/customizar/customiza.php');
                           $tamanho_em_falta[]  =  $tamanho;
                           $cor_em_falta[]  =  $cor;
                         }
-                        Database::desconectar();
+                        
                     }
                     echo $contador;
                     //echo json_encode($produtos_em_falta, JSON_UNESCAPED_UNICODE);
@@ -764,7 +767,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_fpu"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -778,7 +781,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_fpu" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -804,7 +807,7 @@ jQuery(function(){
     var donutData        = {
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_repelente"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -818,7 +821,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_repelente" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -847,7 +850,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_termica"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -861,7 +864,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_termica" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -888,7 +891,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_ciclismo"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -902,7 +905,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "camisa_ciclismo" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -929,7 +932,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "lycra"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -943,7 +946,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "lycra" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -970,7 +973,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "neolycra"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -984,7 +987,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "neolycra" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1012,7 +1015,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "bermuda"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1026,7 +1029,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "bermuda" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1054,7 +1057,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "calca"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1068,7 +1071,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "calca" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1096,7 +1099,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "jaqueta"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1110,7 +1113,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "jaqueta" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1138,7 +1141,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "float_adulto"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1152,7 +1155,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "float_adulto" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1180,7 +1183,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_homologado"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1194,7 +1197,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_homologado" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1221,7 +1224,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_eaf"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1235,7 +1238,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_eaf" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1262,7 +1265,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_kite"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1276,7 +1279,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_adulto_kite" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1307,7 +1310,7 @@ jQuery(function(){
     var donutData        = {
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "float_kids" ';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1322,7 +1325,7 @@ jQuery(function(){
         {
           data: [ <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "float_kids" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1348,7 +1351,7 @@ jQuery(function(){
     var donutData        = {
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_kids_homologado" ';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1363,7 +1366,7 @@ jQuery(function(){
         {
           data: [ <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_kids_homologado" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1390,7 +1393,7 @@ jQuery(function(){
     var donutData        = {
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_kids" ';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1405,7 +1408,7 @@ jQuery(function(){
         {
           data: [ <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "colete_kids" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1432,7 +1435,7 @@ jQuery(function(){
 
       labels: [<?php 
         $produto = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "sapatilha"';
             foreach($pdo->query($sql)as $row){
               $tamanho = $row['tamanho'];
@@ -1446,7 +1449,7 @@ jQuery(function(){
         {
           data: [  <?php 
             $quantidades = array();
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM produtos WHERE tipo_produto = "sapatilha" ';
             foreach($pdo->query($sql)as $row){
               $quantidades[] = $row['quantidade'];
@@ -1477,5 +1480,5 @@ jQuery(function(){
 </body>
 </html>
 <?php 
-include_once('chat.php');
+//include_once('chat.php');
 ?>

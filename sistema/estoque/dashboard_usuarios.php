@@ -8,8 +8,11 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 ?>
 
@@ -132,7 +135,7 @@ $usuario = $_SESSION['nome'];
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -149,7 +152,7 @@ $usuario = $_SESSION['nome'];
      <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -190,12 +193,12 @@ include('../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Usuários Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT usuario FROM usuarios";
                   foreach($pdo->query($sql)as $row){
                     $usuario_cadastrado =  $row['usuario']; 
-                    Database::desconectar();
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     //$sql = "SELECT * FROM user_$usuario_selecionado";
                     $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_cadastrado WHERE DATE(data_atual) = CURDATE() ";
                         foreach($pdo->query($sql)as $row){
@@ -212,12 +215,12 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"> <a href="" style="color: inherit;">Acessos do dia </a></span>
                 <span class="info-box-number">
                   <?php
-                  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT usuario FROM usuarios";
                   foreach($pdo->query($sql)as $row){
                     $usuario_acessou =  $row['usuario']; 
-                    Database::desconectar();
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     //$sql = "SELECT * FROM user_$usuario_selecionado";
                     $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE DATE(data_atual) = CURDATE() ";
                         foreach($pdo->query($sql)as $row){
@@ -238,12 +241,12 @@ include('../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text"><a href="retiradas_do_dia.php" style="color: inherit;">Retiradas do dia</a></span>
                 <span class="info-box-number"><?php  
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                 foreach($pdo->query($sql)as $row){
                 $usuario_selecionado =  $row['usuario'];
-                Database::desconectar();
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado WHERE DATE(data_atual) = CURDATE() ";
                 foreach($pdo->query($sql)as $row){
                   if($row['quantidade'] == 0){
@@ -269,7 +272,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_baixa()" style="color: inherit;">Produtos em baixa</a></span>
                 <span class="info-box-number">
                   <?php
-                  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT * FROM produtos";
                   $contador = 0;
                   $produtos_em_baixa = array();
@@ -287,7 +290,7 @@ include('../../assets/customizar/customiza.php');
                         $cor_em_baixa[]  =  $cor;
 
                       }
-                      Database::desconectar();
+                      
                   }
                   echo '<br>Quantidade <br>';
                   echo $contador;
@@ -315,8 +318,8 @@ function produtos_em_baixa() {
 
 <!-- =========================================ATIVIDADE DOS USUARIOS============================== -->            
               <?php  
-                //require '../../../databases/database.php';
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                //
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                       $usuario = $row['usuario'];
@@ -330,7 +333,7 @@ function produtos_em_baixa() {
                             </div>
                             <div class="card-body p-0">
                             <ul class="products-list product-list-in-card pl-2 pr-2">';
-                      $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                      $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM retiradas_$usuario ORDER BY id DESC limit 8";
                       foreach($pdo->query($sql)as $row){
                       echo '<li class="item">
@@ -342,7 +345,7 @@ function produtos_em_baixa() {
 
             echo '</ul></div></div>     ';
                     }
-                     Database::desconectar();
+                     
                 ?>
 
 

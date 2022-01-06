@@ -8,11 +8,12 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
-
-
 
 ?>
 
@@ -61,7 +62,7 @@ $usuario = $_SESSION['nome'];
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="" src="../../assets/images/logo.svg" height="600" width="600">
-  </div>
+  </div> 
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="navbar_cor"> 
@@ -133,7 +134,7 @@ $usuario = $_SESSION['nome'];
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -150,7 +151,7 @@ $usuario = $_SESSION['nome'];
     <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+//include('customiza.php'); 
 ?>
 
 
@@ -188,12 +189,12 @@ include('../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Total de Produtos Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT produto FROM produtos";
                   $contador_produtos = 0;
                   foreach($pdo->query($sql)as $row){
                     $contador_produtos = $contador_produtos +1;
-                  }Database::desconectar();
+                  }
                   echo $contador_produtos;
                   ?> </span>
               </div>
@@ -207,7 +208,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href="" onclick="produtos_em_baixa()" style="color: inherit;">Total de Produtos em Baixa</a></span>
                 <span class="info-box-number">
                   <?php
-              $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+              $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM produtos";
               $contador = 0;
               $produtos_em_baixa = array();
@@ -224,7 +225,7 @@ include('../../assets/customizar/customiza.php');
                     $tamanho_em_baixa[]  =  $tamanho;
                     $cor_em_baixa[]  =  $cor;
                   }
-                  Database::desconectar();
+                  
               }
               echo $contador;
               //echo json_encode($produtos_em_baixa, JSON_UNESCAPED_UNICODE);
@@ -252,7 +253,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"> <a href="" onclick="produtos_acima_estoque()"  style="color: inherit;">Total de Produtos Acima do Estoque </a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_acima_estoque = array();
@@ -269,7 +270,7 @@ include('../../assets/customizar/customiza.php');
                           $tamanho_acima_estoque[]  =  $tamanho;
                           $cor_acima_estoque[]  =  $cor;
                         }
-                        Database::desconectar();
+                        
                     }
                     echo $contador;
                     //echo json_encode($produtos_acima_estoque, JSON_UNESCAPED_UNICODE);
@@ -297,7 +298,7 @@ include('../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_falta()" style="color: inherit;">Total de Produtos em Falta</a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_em_falta = array();
@@ -314,7 +315,7 @@ include('../../assets/customizar/customiza.php');
                           $tamanho_em_falta[]  =  $tamanho;
                           $cor_em_falta[]  =  $cor;
                         }
-                        Database::desconectar();
+                        
                     }
                     echo $contador;
                     //echo json_encode($produtos_em_falta, JSON_UNESCAPED_UNICODE);
@@ -341,7 +342,6 @@ include('../../assets/customizar/customiza.php');
 
 
 
-
 <!-- ==================================================== TODOS PRODUTOS EM ESTOQUE======================================================== -->
       <div class="card collapsed-card">
       <div class="card-header">
@@ -356,23 +356,20 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
+            
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -393,7 +390,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -421,23 +418,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -458,7 +451,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -484,23 +477,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -521,7 +510,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -547,23 +536,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -584,7 +569,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -610,23 +595,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -647,7 +628,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -674,23 +655,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -711,7 +688,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -738,23 +715,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -775,7 +748,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -801,23 +774,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -838,7 +807,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -865,23 +834,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -902,7 +867,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -931,23 +896,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -968,7 +929,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -994,23 +955,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1031,7 +988,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1058,23 +1015,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1095,7 +1048,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1122,23 +1075,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1159,7 +1108,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1186,23 +1135,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1223,7 +1168,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1250,23 +1195,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1287,7 +1228,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1315,23 +1256,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1352,7 +1289,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1381,23 +1318,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1418,7 +1351,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1449,23 +1382,19 @@ include('../../assets/customizar/customiza.php');
                     <thead>
                       <tr>
                     <?php
-                    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-                    $q = $pdo->prepare("DESCRIBE produtos");
-                    $q->execute();
-                    $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
-                    $teste = implode('|', $table_fields);
+                    
                     echo '
-                        <th style="color: black;">'.$table_fields[0].'</th>
-                        <th style="color: black;">'.$table_fields[1].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[2],0,4).'</th>
-                        <th style="color: black;">'.$table_fields[3].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[5],0,8).'</th>
-                        <th style="color: black;">'.$table_fields[6].'</th>
-                        <th style="color: black;">'.$table_fields[7].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[8],0,6).'</th>
-                        <th style="color: black;">'.$table_fields[9].'</th>
-                        <th style="color: black;">'.$table_fields[10].'</th>
-                        <th style="color: black;">'.mb_strimwidth($table_fields[11],0,5).'</th>
+                        <th style="color: black;">id</th>
+                        <th style="color: black;">produto</th>
+                        <th style="color: black;">tipo</th>
+                        <th style="color: black;">genero</th>
+                        <th style="color: black;">referencia</th>
+                        <th style="color: black;">cor</th>
+                        <th style="color: black;">tamanho</th>
+                        <th style="color: black;">barcode</th>
+                        <th style="color: black;">valor</th>
+                        <th style="color: black;">lote</th>
+            <th style="color: black;">quantidade</th>
                       ';
                       echo '</tr>
                       </th><tbody><!-- INSERE DADOS NA TABELA -->
@@ -1486,7 +1415,7 @@ include('../../assets/customizar/customiza.php');
                     <td style="color: black;">'.$row['quantidade'].'</td>
                   </tr>';
                     };
-                    database::desconectar();
+                    
                     ?>
                 </tbody></table> </div>
               <!-- /.card-body -->
@@ -1723,5 +1652,5 @@ jQuery(function(){
 </body>
 </html>
 <?php 
-include_once('chat.php');
+//include_once('chat.php');
 ?>

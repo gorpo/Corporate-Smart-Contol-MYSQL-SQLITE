@@ -8,14 +8,17 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
-//require '../../databases/database.php';
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+//
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['usuario'] == $_SESSION['nome']){
@@ -145,7 +148,7 @@ foreach($pdo->query($sql)as $row){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -162,7 +165,7 @@ foreach($pdo->query($sql)as $row){
    <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -203,8 +206,8 @@ include('../../assets/customizar/customiza.php');
 <!-- =========================================ATIVIDADE DOS USUARIOS============================== -->          
             
               <?php  
-                //require '../../../databases/database.php';
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                //
+                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                       $usuario = $row['usuario'];
@@ -228,7 +231,7 @@ include('../../assets/customizar/customiza.php');
                             </div>
                             <div class="card-body p-0">
                             <ul class="products-list product-list-in-card pl-2 pr-2">';
-                      $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                      $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM retiradas_$usuario ORDER BY id DESC ";
                       foreach($pdo->query($sql)as $row){
                       echo '<li class="item">
@@ -240,7 +243,7 @@ include('../../assets/customizar/customiza.php');
 
             echo '</ul></div></div>     ';
                     }
-                     Database::desconectar();
+                     
                 ?>
 
 

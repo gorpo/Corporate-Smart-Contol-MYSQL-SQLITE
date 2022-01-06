@@ -4,13 +4,14 @@ if(!$_SESSION['nome']) {
   header('Location: ../../index.php');
   exit();
 }
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 
-//inclui o arquivo de conexao com banco de dados
-include('../../../databases/conexao.php');
 
 
 
-require '../../../databases/database.php';
+
 //Acompanha os erros de validação
 //id informacao descricao content_id imagem_db imagem link
 // Processar so quando tenha uma chamada post
@@ -33,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //---------------------------------------------------------------------------------------------------------------------
 //Inserindo  na database:
     if ($validacao) {
-        $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+        $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO informacoes_estoque (informacao,confirmacao,status,data) VALUES(?,?,?,NOW())";
+        $sql = "INSERT INTO informacoes_estoque (informacao,confirmacao,status,data) VALUES(?,?,?,date('now'))";
         $q = $pdo->prepare($sql);
         $q->execute(array($informacao,$confirmacao,$status));
-        database::desconectar();
+        
         header("Location: informacoes.php");
     }
 }
@@ -50,12 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Bloco if utilizado pela etapa Delete
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+    $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM informacoes where id = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($id));
-    database::desconectar();
+    
     header("Location: informacoes.php");
 }
 
@@ -67,16 +68,16 @@ if(isset($_GET['id_confirmacao'])){
   $confirmacao = 'executado';
   $status= $_GET['status'];
 
-  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+  $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=now() WHERE id=:id";
+  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
   $q->bindParam(':informacao', $informacao);
   $q->bindParam(':confirmacao', $confirmacao);
   $q->bindParam(':status', $status);
   $q->bindParam(':id', $id);
   $q->execute();
-  database::desconectar();
+  
   header("Location: informacoes.php");
 }
  ?>
@@ -282,7 +283,7 @@ include('../../../assets/customizar/customiza.php');
 
 
               <?php  
-                $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+                $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = 'SELECT * FROM informacoes ORDER BY informacao ASC';
   foreach($pdo->query($sql)as $row){
 
@@ -334,7 +335,7 @@ include('../../../assets/customizar/customiza.php');
     }
   }
   
-  Database::desconectar();
+  
 }
 ?>
  </div></div>  
@@ -355,7 +356,7 @@ include('../../../assets/customizar/customiza.php');
                 <tbody>
                     <?php
         //include '../../../databases/database.php';
-        $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+        $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $sql = 'SELECT * FROM informacoes ORDER BY id DESC';
 
         foreach($pdo->query($sql)as $row)
@@ -381,7 +382,7 @@ include('../../../assets/customizar/customiza.php');
             echo '</td>';
             echo '</tr>';
         }
-        database::desconectar();
+        
         ?>
                 </tbody>
             </table>

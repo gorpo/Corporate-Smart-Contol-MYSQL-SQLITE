@@ -8,13 +8,16 @@ if(!$_SESSION['nome']) {
   exit();
 }
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
-//require '../../databases/database.php';
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+//
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['nome'] == $_SESSION['nome']){
@@ -25,8 +28,8 @@ foreach($pdo->query($sql)as $row){
 
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
-//require '../../databases/database.php';
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+//
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['nome'] == $_SESSION['nome']){
@@ -45,7 +48,7 @@ if(isset($_GET['id_confirmacao'])){
   $confirmacao = 'executado';
   $status= $_GET['status'];
 
-  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=now() WHERE id=:id";
   $q = $pdo->prepare($sql);
@@ -54,7 +57,7 @@ if(isset($_GET['id_confirmacao'])){
   $q->bindParam(':status', $status);
   $q->bindParam(':id', $id);
   $q->execute();
-  database::desconectar();
+  
   header("Location: bip_unico.php");
 }
 
@@ -179,7 +182,7 @@ if(isset($_GET['id_confirmacao'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -196,7 +199,7 @@ if(isset($_GET['id_confirmacao'])){
     <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -253,8 +256,8 @@ include('../../assets/customizar/customiza.php');
 <tbody> 
 <!-- -------------- CODIGO PHP DA PESQUISA E CRUD DOS PRODUTOS------------- -->
 <?php
-//require '../../databases/database.php';
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+//
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $info = null;
 
    if(isset($_GET['ret'])){
@@ -339,7 +342,7 @@ $info = null;
             Caso tenha ocorrido um erro ou abatido algum produto a mais, informar sobre oque ocorreu na planilia!</p></h5>
         </div>';
   echo '</div></div>';
-  Database::desconectar();
+  
 }
 
 

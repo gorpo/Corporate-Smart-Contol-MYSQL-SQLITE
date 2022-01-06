@@ -3,47 +3,10 @@
 <?php
 
 
-//cria a tabela de customização
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `customizar` (
-`id` INT NOT NULL,
-`dark_mode` varchar(200) NOT NULL,
-`fixar_cabecalho` varchar(200) NOT NULL,
-`dropdown_legacy` varchar(200) NOT NULL,
-`sem_bordas` varchar(200) NOT NULL,
-`menu_fechado` varchar(200) NOT NULL,
-`menu_flat` varchar(200) NOT NULL,
-`menu_legacy` varchar(200) NOT NULL,
-`menu_compact` varchar(200) NOT NULL,
-`submenu` varchar(200) NOT NULL,
-`submenu_esconder` varchar(200) NOT NULL,
-`desabilitar_auto_expand` varchar(200) NOT NULL,
-`fixa_rodape` varchar(200) NOT NULL,
-`texto_corpo` varchar(200) NOT NULL,
-`texto_barra_navegacao` varchar(200) NOT NULL,
-`texto_logotipo` varchar(200) NOT NULL,
-`texto_barra_lateral` varchar(200) NOT NULL,
-`texto_rodape` varchar(200) NOT NULL,
-`cor_barra_topo` varchar(200) NOT NULL,
-`cor_logo` varchar(200) NOT NULL,
-PRIMARY KEY (id)
-)ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;");
-$sql->execute();
-$pdo = Database::desconectar();
-
-//cria a tabela com valores vazios
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = $pdo->prepare("INSERT IGNORE `customizar` ( `dark_mode`,`fixar_cabecalho`,`dropdown_legacy`,`sem_bordas`,`menu_fechado`,`menu_flat`,`menu_legacy`,`menu_compact`,`submenu`,`submenu_esconder`,`desabilitar_auto_expand`,`fixa_rodape`,`texto_corpo`,`texto_barra_navegacao`,`texto_logotipo`,`texto_barra_lateral`,`texto_rodape`,`cor_barra_topo`,`cor_logo`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;");
-$sql->execute(array('none','none','none','none','none','none','none','none','none','none','none','none','none','none','none','none','none','none','none'));
-$pdo = Database::desconectar();
-
-
 
 
 //dark_mode
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['dark_mode'] == 'dark_mode') {
@@ -58,7 +21,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //fixar_cabecalho
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['fixar_cabecalho'] == 'fixar_cabecalho') {
@@ -73,7 +36,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //dropdown-legacy 
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['dropdown_legacy'] == 'dropdown_legacy') {
@@ -88,7 +51,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //sem_bordas
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['sem_bordas'] == 'sem_bordas') {
@@ -103,7 +66,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //menu_fechado
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['menu_fechado'] == 'menu_fechado') {
@@ -120,7 +83,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //menu_flat
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['menu_flat'] == 'menu_flat') {
@@ -135,7 +98,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //menu_legacy
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['menu_legacy'] == 'menu_legacy') {
@@ -150,7 +113,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //menu_compact 
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['menu_compact'] == 'menu_compact') {
@@ -165,7 +128,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //submenu
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['submenu'] == 'submenu') {
@@ -180,7 +143,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //submenu_esconder
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['submenu_esconder'] == 'submenu_esconder') {
@@ -195,7 +158,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //desabilitar_auto_expand
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['desabilitar_auto_expand'] == 'desabilitar_auto_expand') {
@@ -210,7 +173,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //fixa_rodape
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['fixa_rodape'] == 'fixa_rodape') {
@@ -225,7 +188,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //texto_corpo
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['texto_corpo'] == 'texto_corpo') {
@@ -240,7 +203,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //texto_barra_navegacao
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['texto_barra_navegacao'] == 'texto_barra_navegacao') {
@@ -255,7 +218,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //texto_logotipo
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['texto_logotipo'] == 'texto_logotipo') {
@@ -270,7 +233,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //texto_barra_lateral
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['texto_barra_lateral'] == 'texto_barra_lateral') {
@@ -285,7 +248,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //texto_rodape
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['texto_rodape'] == 'texto_rodape') {
@@ -301,7 +264,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //cor_barra_topo
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['cor_barra_topo'] != 'cor_barra_topo_off') {
@@ -317,7 +280,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //cor_logo
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM customizar";
 foreach($pdo->query($sql)as $row){
   if ($row['cor_logo'] != 'cor_barra_topo_off') {

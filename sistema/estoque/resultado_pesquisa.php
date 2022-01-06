@@ -10,8 +10,11 @@ if(!$_SESSION['nome']) {
 
 
 //inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+
+$email =  $_SESSION['email_login'];
+$senha = $_SESSION['senha_login'];
+$token = $_SESSION['token'];
 $usuario = $_SESSION['nome'];
 
 
@@ -118,12 +121,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 //Inserindo no database:
      if ($validacao) {
-        $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+        $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
         $q = $pdo->prepare($sql);
         $q->execute(array($produto, $tipo_produto, $genero, $imagem, $referencia, $cor, $tamanho, $codigo_barra, $valor,$lote, $quantidade));
-        database::desconectar();
+        
         header("Location: index.php");
     }
 }
@@ -235,12 +238,12 @@ if(isset($_POST["submit"])){
 //-------------------DELETA OS PRODUTOS --------------
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($id));
-    database::desconectar();
+    
     header("Location: index.php");
 }
 ?>
@@ -369,7 +372,7 @@ if(isset($_GET['id'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+            $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -386,7 +389,7 @@ if(isset($_GET['id'])){
      <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('../../assets/customizar/customiza.php'); 
+include('customiza.php'); 
 ?>
 
 
@@ -417,7 +420,7 @@ include('../../assets/customizar/customiza.php');
 <tbody>
 <!-- -------------- CODIGO PHP DA PESQUISA E CRUD DOS PRODUTOS------------- -->
 <?php
-$pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+$pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $info = null;
 
   if(isset($_GET['buscar'])){
@@ -456,7 +459,7 @@ $info = null;
   }   
 }else{
   //sistema do CRUD ------------------------------------------------------------------------------>
-  $pdo = Database::conectar($dbNome='csc_'.$_SESSION['email_cliente']);
+  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = 'SELECT * FROM produtos ORDER BY produto ASC';
   foreach($pdo->query($sql)as $row)
 
@@ -481,7 +484,7 @@ $info = null;
       echo '</td>';
       echo '</td> </tr> </table>  <br>';
   }
-  Database::desconectar();
+  
 }
 ?>
 </tbody>
