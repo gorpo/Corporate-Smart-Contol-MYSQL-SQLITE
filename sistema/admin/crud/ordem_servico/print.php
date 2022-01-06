@@ -58,7 +58,7 @@ $informacao = $_GET['informacao'];
 
 
                 <?php  
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $q = $pdo->prepare("SELECT MAX(id) FROM ordem_servico");
                 $q->execute();
                 $ordem_servico = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -97,7 +97,7 @@ $informacao = $_GET['informacao'];
 
 
                     //pega a id da tabela de ordem de serviços para dar o numero da ordem de serviço
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $q = $pdo->prepare("SELECT MAX(id) FROM ordem_servico");
                 
                     $q->execute();
@@ -110,7 +110,7 @@ $informacao = $_GET['informacao'];
                     foreach ($_SESSION['ordem_servico'] as $key => $value) {
                     foreach ($_SESSION['ordem_servico'][$key] as $key2=>$value){
                       $id_produto = $value['produto'];
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM produtos WHERE id = '$id_produto'";
                       foreach($pdo->query($sql)as $row){
                         echo '
@@ -138,7 +138,7 @@ $informacao = $_GET['informacao'];
 
   </div>
 <hr style="border: 1px solid black;">
- <p><b>Telefone: (48) 99145.4300  |  Email: comercial@vopen.com.br |  Rodovia SC-434, 11440 Sala 2 | Garopaba, Santa Catarina</b><br><p>
+ <p><b>Corporate Smart Control</b><br><p>
 </div>
 
 <!-- ./wrapper -->

@@ -159,7 +159,7 @@ include('customiza.php');
                 <div class="row">
                   
                   <?php  
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM representantes";
                     foreach($pdo->query($sql)as $row){
                     echo '<div class="col-sm-4">

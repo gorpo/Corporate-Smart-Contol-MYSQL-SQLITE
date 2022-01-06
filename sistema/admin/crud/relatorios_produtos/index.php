@@ -166,7 +166,7 @@ include('customiza.php');
                 <span class="info-box-text">Camisetas FPU50+</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_fpu' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -195,7 +195,7 @@ include('customiza.php');
                 <span class="info-box-text">Camisetas Repelente</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_repelente' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -218,7 +218,7 @@ include('customiza.php');
                 <span class="info-box-text">Camisetas Térmica</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_termica' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -241,7 +241,7 @@ include('customiza.php');
                 <span class="info-box-text">Camisetas Ciclismo</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_ciclismo' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -264,7 +264,7 @@ include('customiza.php');
                 <span class="info-box-text">Lycra</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'lycra' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -288,7 +288,7 @@ include('customiza.php');
                 <span class="info-box-text">Neolycra</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'neolycra' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -312,7 +312,7 @@ include('customiza.php');
                 <span class="info-box-text">Bermuda</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'bermuda' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -335,7 +335,7 @@ include('customiza.php');
                 <span class="info-box-text">Calça</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'calca' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -358,7 +358,7 @@ include('customiza.php');
                 <span class="info-box-text">Jaqueta</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'jaqueta' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -382,7 +382,7 @@ include('customiza.php');
                 <span class="info-box-text">Float Adulto</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_adulto' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -405,7 +405,7 @@ include('customiza.php');
                 <span class="info-box-text">Colete Adulto Homologado</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_homologado' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -428,7 +428,7 @@ include('customiza.php');
                 <span class="info-box-text">Colete Adulto EAF</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_eaf' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -452,7 +452,7 @@ include('customiza.php');
                 <span class="info-box-text">Colete Adulto Kitesurf</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_kite' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -476,7 +476,7 @@ include('customiza.php');
                 <span class="info-box-text">Colete Kids Homologado</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids_homologado' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -500,7 +500,7 @@ include('customiza.php');
                 <span class="info-box-text">Colete Kids</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -523,7 +523,7 @@ include('customiza.php');
                 <span class="info-box-text">Float Kids</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_kids' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){
@@ -546,7 +546,7 @@ include('customiza.php');
                 <span class="info-box-text">Sapatilha Kids</span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'sapatilha' ORDER BY produto ASC";
                     $quantidade = array();
                     foreach($pdo->query($sql)as $row){

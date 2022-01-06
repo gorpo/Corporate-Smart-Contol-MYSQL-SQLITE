@@ -7,7 +7,7 @@ $representante = $_GET['representante'] ;
 
 
 //PEGA OS DADOS NA DATABASE
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = 'SELECT * FROM representantes ';
 foreach($pdo->query($sql)as $row){
     if(mb_convert_case($row['representante'],MB_CASE_LOWER,mb_detect_encoding($row['representante'])) == $representante){
@@ -23,7 +23,7 @@ foreach($pdo->query($sql)as $row){
 
 
 //PEGA OS DADOS PARA POR NO TOPO DA TABELA
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $q = $pdo->prepare("DESCRIBE carrinho_representante_$representante");
 $q->execute();
 $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -33,7 +33,7 @@ $teste = implode('|', $table_fields);
 
 
 //pega o id e a data para por no topo do email
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM carrinho_representante_$representante ORDER BY id DESC limit 1";
 foreach($pdo->query($sql)as $row){
     $id = $row['id'];
@@ -62,18 +62,18 @@ $mail->CharSet = 'UTF-8';
 
 try {
     //Server settings
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-    $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'mail.vopen.com.br ';                     //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'criacao@vopen.com.br';                     //SMTP username
-    $mail->Password   = 'Criacao2016!';                               //SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                                                     //Enable verbose debug output
+    $mail->isSMTP();                                                                 //Send using SMTP
+    $mail->Host       = 'smtp.hostinger.com';           //smtp.hostinger.com                      //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                                    //Enable SMTP authentication
+    $mail->Username   = 'contato@corporatesmartcontrol.com';                                         //SMTP username
+    $mail->Password   = 'CRCdaimonae@1';                                                    //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;                            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                                       //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('criacao@vopen.com.br', 'VOPEN');
-    $mail->addAddress('guilherme-paluch@hotmail.com');     //Add a recipient
+    $mail->setFrom('contato@corporatesmartcontrol.com', 'Corporate Smart Control');
+    $mail->addAddress($email);     //Add a recipient
     $mail->addAddress($email);               //Name is optional
     //$mail->addReplyTo('info@example.com', 'Information');
     //$mail->addCC('cc@example.com');
@@ -85,7 +85,7 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Pedido VOPEN - Representante '.ucfirst($representante).'';
+    $mail->Subject = 'Pedido - Representante '.ucfirst($representante).'';
 
     $espacos = '&zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;&zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;';
     
@@ -161,7 +161,7 @@ try {
 
 
 
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM carrinho_representante_$representante ORDER BY id DESC limit 1";
 foreach($pdo->query($sql)as $row){
       $array_id = explode(',', $row['id']);
@@ -210,7 +210,7 @@ foreach($pdo->query($sql)as $row){
 
 
 $soma_total = 0;
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM carrinho_representante_$representante ORDER BY id DESC limit 1";
 foreach($pdo->query($sql)as $row){
     $valor = $row['valor'];
@@ -252,7 +252,7 @@ foreach($pdo->query($sql)as $row){
           <div class="col-sm-4 invoice-col">
     <address>
         <hr style="border: 1px solid #e1dddd;">
-        <strong>VOPEN</strong>  - Rodovia SC-434, 11440 Sala 2 | Garopaba, Santa Catarina | Telefone: (48) 99145.4300    | Email: comercial@vopen.com.br
+        <strongCorporate Smart Control</strong>  - Rodovia SC-434, 11440 Sala 2 | Garopaba, Santa Catarina | Telefone: (48) 99145.4300    | Email: suporte@corporatesmartcontrol.com
     </address>
     </div><br>';
 
@@ -266,7 +266,7 @@ foreach($pdo->query($sql)as $row){
     //session_destroy();
     header('Location: fecha_carrinho.php?representante='.$representante.'');
 } catch (Exception $e) {
-    echo "Seu pedido foi computado mas tivemos um erro ao enviar o email, informe a nossa equipe pelo email criacao@vopen.com.br o codigo de erro: {$mail->ErrorInfo}";
+    echo "Seu pedido foi computado mas tivemos um erro ao enviar o email, informe a nossa equipe pelo email suporte@corporatesmartcontrol.com o codigo de erro: {$mail->ErrorInfo}";
 }
 
 

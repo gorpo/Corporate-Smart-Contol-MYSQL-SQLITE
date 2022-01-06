@@ -14,7 +14,7 @@ $usuario = $_SESSION['nome'];
 
 
 $tipo_produto = $_GET['tipo_produto'];
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = $pdo->prepare("SELECT * FROM produtos WHERE tipo_produto = '$tipo_produto'");
 $sql->execute();
 $info = $sql->fetchAll();

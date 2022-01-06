@@ -50,7 +50,7 @@ $html_topo = '
     <htmlpagefooter name="MyFooter2">
         <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
             <tr>
-                <td width="63%"><span style="font-weight: bold; font-style: italic;">VOPEN -  CNPJ 36.333.392/0001-58. Rodovia SC-434, 11440 Sala 2 - Garopaba/SC.</span></td>
+                <td width="63%"><span style="font-weight: bold; font-style: italic;"Corporate Smart Control -  CNPJ 36.333.392/0001-58. Rodovia SC-434, 11440 Sala 2 - Garopaba/SC.</span></td>
                 <!-- <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td> -->
                 <td width="33%" style="text-align: right; ">Página {PAGENO}/{nbpg} | {DATE j-m-Y}</td>
             </tr>
@@ -68,7 +68,7 @@ $mpdf->WriteHTML($html_div_inicio);
 
         // FOREACH PHP PARA PEGAR OS DADOS--------------------------------------------------->>
         $array_soma_total = array();
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $sql = "SELECT * FROM produtos WHERE tipo_produto = '$produto' ORDER BY produto ASC";
         foreach($pdo->query($sql)as $row){
           $produto =   $row['produto'];

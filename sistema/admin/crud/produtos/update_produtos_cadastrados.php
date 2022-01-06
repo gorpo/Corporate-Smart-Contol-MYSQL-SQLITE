@@ -109,11 +109,11 @@ if (!empty($_POST)) {
 
 
     
-    // update data somente desta forma pode ser passado ao PDO o NOW() para dar update no mysql(data) - ATENÇÃO, o data=now nao usa os =:
+    // update data somente desta forma pode ser passado ao PDO o date('now') para dar update no mysql(data) - ATENÇÃO, o data=now nao usa os =:
     if ($validacao) {
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "UPDATE produtos set produto=:produto,tipo_produto=:tipo_produto, genero=:genero, imagem=:imagem, referencia=:referencia, cor=:cor, tamanho=:tamanho, codigo_barra=:codigo_barra, valor=:valor, lote=:lote, quantidade=:quantidade, data=now() WHERE id=:id";
+        $sql = "UPDATE produtos set produto=:produto,tipo_produto=:tipo_produto, genero=:genero, imagem=:imagem, referencia=:referencia, cor=:cor, tamanho=:tamanho, codigo_barra=:codigo_barra, valor=:valor, lote=:lote, quantidade=:quantidade, data=date('now') WHERE id=:id";
         
         $q = $pdo->prepare($sql);
         
@@ -137,7 +137,7 @@ if (!empty($_POST)) {
 
 } else {
     echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM produtos  where id = ?";
     $q = $pdo->prepare($sql);

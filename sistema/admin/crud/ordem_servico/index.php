@@ -20,7 +20,7 @@ $usuario = $_SESSION['nome'];
 
 
 //CRIA A TABELA DE ORDEM DE SERVIÇO CASO NAO EXISTA
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = $pdo->prepare("CREATE TABLE IF NOT EXISTS ordem_servico (
 id INTEGER PRIMARY KEY   AUTOINCREMENT,
@@ -29,7 +29,7 @@ quantidade varchar(300) DEFAULT NULL,
 data datetime DEFAULT NULL
  )");
 $sql->execute();
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 
 
 //Acompanha os erros de validação
@@ -85,9 +85,9 @@ if(isset($_GET['gravar'])){
     $quantidade_array[] = $value['quantidade'];
   }
  }
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "INSERT INTO  ordem_servico  (produto, quantidade, data) VALUES(?,?,NOW())";
+$sql = "INSERT INTO  ordem_servico  (produto, quantidade, data) VALUES(?,?,date('now'))";
 $q = $pdo->prepare($sql);
 $q->execute(array(implode(",",$produto_array),implode(",",$quantidade_array)));
 
@@ -105,7 +105,7 @@ header("Location: print.php?informacao=$informacao");
 //-------------------DELETA OS PRODUTOS --------------
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
@@ -268,15 +268,7 @@ include('customiza.php');
               <div class="card-body">
 
 
-<!-- função que pega a id tipo_produto para poder alimentar o proximo dropdown -->
-<script type='text/javascript' src='jquery_1.6.4.js'></script>
-<script type="text/javascript">//pega o valor da id tipo_produto e quando ela é alterada passa o valor para a id produtos com base na pagina lista_produtos.php
-    $(document).ready(function(){
-        $('#tipo_produto').change(function(){
-            $('#produtos').load('lista_produtos.php?tipo_produto='+$('#tipo_produto').val());
-        });
-    });
-</script>
+
 
 
 <form method="get"  action="index.php">
@@ -329,6 +321,20 @@ include('customiza.php');
     </div></div>
 
 
+    <!-- função que pega a id tipo_produto para poder alimentar o proximo dropdown -->
+<script type='text/javascript' src='jquery_1.6.4.js'></script>
+<script type="text/javascript">//pega o valor da id tipo_produto e quando ela é alterada passa o valor para a id produtos com base na pagina lista_produtos.php
+    $(document).ready(function(){
+        $('#tipo_produto').change(function(){
+            $('#produtos').load('lista_produtos.php?tipo_produto='+$('#tipo_produto').val());
+        });
+    });
+</script>
+
+
+
+
+
 
     <!-- COLUNA 3 QUANTIDADE-->
     <div class="site-right-col">
@@ -356,7 +362,7 @@ include('customiza.php');
 
 
 
-<!-- ==================================================== TODOS PRODUTOS EM ESTOQUE======================================================== -->
+<!-- ==================================================== O S======================================================== -->
       <?php 
       if(isset($_SESSION['ordem_servico'])){
         echo '<div class="card card-primary ">';
@@ -395,7 +401,7 @@ include('customiza.php');
 
 
                     //pega a id da tabela de ordem de serviços para dar o numero da ordem de serviço
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $q = $pdo->prepare("SELECT MAX(id) FROM ordem_servico");
                 
                     $q->execute();
@@ -409,7 +415,7 @@ include('customiza.php');
                     foreach ($_SESSION['ordem_servico'] as $key => $value) {
                     foreach ($_SESSION['ordem_servico'][$key] as $key2=>$value){
                       $id_produto = $value['produto'];
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM produtos WHERE id = '$id_produto'";
                       foreach($pdo->query($sql)as $row){
                         echo '
@@ -623,5 +629,5 @@ jQuery(function(){
 </body>
 </html>
 <?php 
-include_once('chat.php');
+//include_once('chat.php');
 ?>

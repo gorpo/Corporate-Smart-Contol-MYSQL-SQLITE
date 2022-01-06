@@ -59,7 +59,7 @@ $id = $_GET['id'];
 
 
                 <?php  
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $q = $pdo->prepare("SELECT * FROM ordem_servico WHERE id = '$id'");
                 $q->execute();
                 $ordem_servico = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -98,7 +98,7 @@ $id = $_GET['id'];
 
 
                     //pega a id da tabela de ordem de serviços para dar o numero da ordem de serviço
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $q = $pdo->prepare("SELECT * FROM ordem_servico WHERE id = '$id'");
                     $q->execute();
                     $ordem_servico = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -108,7 +108,7 @@ $id = $_GET['id'];
 
 
                     //faz os foreach para alimentar a tabela
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = $pdo->prepare("SELECT * FROM ordem_servico WHERE id = '$id' ");
                     $sql->execute();
                     $info = $sql->fetchAll();
@@ -118,7 +118,7 @@ $id = $_GET['id'];
                       foreach($array_produto as $key=>$value){
                         $id_produto = $value;
                         $quantidade = $array_quantidade[$key];
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE id = '$id_produto'";
                         foreach($pdo->query($sql)as $row){
                           echo '<td style="color: black;">'.$numero_os.'</td>
@@ -146,7 +146,7 @@ $id = $_GET['id'];
 
   </div>
 <hr style="border: 1px solid black;">
- <p><b>Telefone: (48) 99145.4300  |  Email: comercial@vopen.com.br |  Rodovia SC-434, 11440 Sala 2 | Garopaba, Santa Catarina</b><br><p>
+ <p><b>Corporate Smart Control</b><br><p>
 </div>
 
 <!-- ./wrapper -->

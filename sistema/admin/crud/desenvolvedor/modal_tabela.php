@@ -7,6 +7,7 @@ $input = filter_input_array(INPUT_POST);
 if (isset($input['action'])) { 
     if($input['action'] == 'edit'){
   $update_field='';
+
   if(isset($input['produto'])) {
     $update_field.= "produto='".$input['produto']."'";
 } else if(isset($input['tipo_produto'])) {
@@ -31,8 +32,11 @@ if (isset($input['action'])) {
     $update_field.= "quantidade='".$input['quantidade']."'";    
 } 
 if($update_field && $input['id']) {
-    $sql_query = "UPDATE produtos SET $update_field WHERE id='" . $input['id'] . "'"; 
-    mysqli_query($conexao, $sql_query) or die("database error:". mysqli_error($conexao));   
+
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = $pdo->query("UPDATE produtos SET $update_field WHERE id='" . $input['id'] . "'");
+    $sql->execute(); 
 }
 }}
 ?>
@@ -63,33 +67,19 @@ if($update_field && $input['id']) {
 
 
             <?php
-            $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
-            $q = $pdo->prepare("PRAGMA table_info('produtos');");
-            $q->execute();
-            $table_fields = $q->fetchAll(PDO::FETCH_ASSOC);
-
-            //deletar pois talvez nao sirva para nada
-            foreach($table_fields as $row){
-               echo '<th>'.print_r($row['name']).'</th>';
+             $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
+            $select = $pdo->query('SELECT * FROM produtos');
+            $total_column = $select->columnCount();
+            //var_dump($total_column);
+            for ($counter = 0; $counter < $total_column; $counter ++) {
+                $meta = $select->getColumnMeta($counter);
+                $column[] = $meta['name'];
             }
-
-
-
-
+            foreach ($column as $key => $value) {
+                echo '<th>'.$value.'</th>';
+            }
+           
             echo '
-            <th>'.print_r(json_encode($table_fields[0]['name'])).'</th>
-            <th>'.print_r(json_encode($table_fields[1]['name'])).'</th>
-            <th>'.print_r(json_encode(mb_strimwidth($table_fields[2]['name'],0,4))).'</th>
-            <th>'.print_r(json_encode($table_fields[3]['name'])).'</th>
-            <th>'.print_r(json_encode($table_fields[4]['name'])).'</th>
-            <th>'.print_r(json_encode(mb_strimwidth($table_fields[5]['name'],0,8))).'</th>
-            <th>'.print_r(json_encode($table_fields[6]['name'])).'</th>
-            <th>'.print_r(json_encode($table_fields[7]['name'])).'</th>
-            <th>'.print_r(json_encode(mb_strimwidth($table_fields[8]['name'],0,6))).'</th>
-            <th>'.print_r(json_encode($table_fields[9]['name'])).'</th>
-            <th>'.print_r(json_encode($table_fields[10]['name'])).'</th>
-            <th>'.print_r(json_encode(mb_strimwidth($table_fields[11]['name'],0,5))).'</th>
-            <th>'.print_r(json_encode($table_fields[12]['name'])).'</th>
             </tr></thead>
             <tbody class="scroll-pane">
         <tr>

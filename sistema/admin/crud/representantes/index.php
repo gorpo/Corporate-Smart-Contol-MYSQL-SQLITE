@@ -120,15 +120,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 //Inserindo no database:
      if ($validacao) {
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO  representantes  (imagem, representante, nome_fantasia, cnpj, inscricao_estadual, email, telefone, endereco, cidade, estado, cep, data_atual) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+        $sql = "INSERT INTO  representantes  (imagem, representante, nome_fantasia, cnpj, inscricao_estadual, email, telefone, endereco, cidade, estado, cep, data_atual) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
         $q = $pdo->prepare($sql);
         $q->execute(array($imagem, $representante, $nome_fantasia, $cnpj, $inscricao_estadual, $email, $telefone, $endereco, $cidade, $estado, $cep));
         
 
 
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "CREATE DATABASE `representante_$representante`";
         $q = $pdo->prepare($sql);
@@ -251,14 +251,14 @@ if(isset($_POST["submit"])){
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $representante = $_GET['representante'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM representantes where id = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($id));
     
     //DELETA A TABELA DO REPRESENTANTE CASO ELE SEJA DELETADO
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DROP DATABASE representante_$representante";
     $q = $pdo->prepare($sql);
@@ -558,7 +558,7 @@ include('customiza.php');
 <tbody>
 <!-- -------------- CODIGO PHP DA PESQUISA E CRUD------------- -->
 <?php
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $info = null;
 
   if(isset($_GET['buscar'])){
@@ -599,7 +599,7 @@ $info = null;
   }   
 }else{
   //sistema do CRUD ------------------------------------------------------------------------------>
-  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = $pdo->prepare("SELECT * FROM representantes");
   $sql->execute();
   $info = $sql->fetchAll();

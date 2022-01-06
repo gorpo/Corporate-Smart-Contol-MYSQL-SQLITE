@@ -75,7 +75,7 @@ $representante = $_GET['representante'];
 
 
                         //pega o id 
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM carrinho_representante_$representante ORDER BY id DESC limit 1";
                         foreach($pdo->query($sql)as $row){
                             $id = $row['id'];
@@ -83,7 +83,7 @@ $representante = $_GET['representante'];
                         }
                         
                         //pega demais dados
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = 'SELECT * FROM representantes ';
                         foreach($pdo->query($sql)as $row){
                             if(mb_convert_case($row['representante'],MB_CASE_LOWER,mb_detect_encoding($row['representante'])) == $representante){
@@ -105,11 +105,11 @@ $representante = $_GET['representante'];
 
                             <div class="col-sm-4 invoice-col">
                             <address>
-                            <strong>VOPEN</strong><br>
+                            <strongCorporate Smart Control</strong><br>
                             Rodovia SC-434, 11440 Sala 2<br>
                             Garopaba, Santa Catarina<br>
                             Telefone: (48) 99145.4300 <br>
-                            Email: comercial@vopen.com.br
+                            Email: suporte@corporatesmartcontrol.com
                             </address>
                             </div>
 
@@ -137,7 +137,7 @@ $representante = $_GET['representante'];
                       <tr>
                     <!-- INSERE DADOS NO TOPO DA TABELA -->
                     <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $q = $pdo->prepare("DESCRIBE carrinho_representante_$representante");
                     $q->execute();
                     $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
@@ -165,7 +165,7 @@ $representante = $_GET['representante'];
 
 
 
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM carrinho_representante_$representante ORDER BY id DESC limit 1";
                     foreach($pdo->query($sql)as $row){
                       $array_id = explode(',', $row['id']);

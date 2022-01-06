@@ -71,10 +71,10 @@ if (!empty($_POST) && ($_POST["submit"] != 'upload_imagem')) {
         $validacao = false;
     }
     
-    // update data somente desta forma pode ser passado ao PDO o NOW() para dar update no mysql(data) - ATENÇÃO, o data=now nao usa os =:
+    // update data somente desta forma pode ser passado ao PDO o date('now') para dar update no mysql(data) - ATENÇÃO, o data=now nao usa os =:
     if ($validacao) {
         //altera os dados no banco de dados do usuario
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "UPDATE usuarios set nome=:nome,usuario=:usuario, telefone=:telefone, imagem=:imagem, email=:email, senha=:senha WHERE id=:id";
         $q = $pdo->prepare($sql);
@@ -105,7 +105,7 @@ if (!empty($_POST) && ($_POST["submit"] != 'upload_imagem')) {
 
         try{
         //altera a tabela user_ retiradas_
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $temp_nome = $_SESSION['usuario'];
         $sql = "RENAME TABLE user_$temp_nome TO user_$usuario, retiradas_$temp_nome TO retiradas_$usuario;";
@@ -123,7 +123,7 @@ if (!empty($_POST) && ($_POST["submit"] != 'upload_imagem')) {
 
 
 } else {
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM usuarios  where id = ?";
     $q = $pdo->prepare($sql);

@@ -15,7 +15,7 @@ $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../databases/database.php';
-$pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['nome'] == $_SESSION['nome']){
@@ -27,7 +27,7 @@ foreach($pdo->query($sql)as $row){
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../databases/database.php';
-$pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['nome'] == $_SESSION['nome']){
@@ -43,9 +43,9 @@ if(isset($_GET['id_confirmacao'])){
   $confirmacao = 'executado';
   $status= $_GET['status'];
 
-  $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "UPDATE informacoes_estoque set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=now() WHERE id=:id";
+  $sql = "UPDATE informacoes_estoque set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
   $q->bindParam(':informacao', $informacao);
   $q->bindParam(':confirmacao', $confirmacao);
@@ -193,7 +193,7 @@ if(isset($_GET['id_confirmacao'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <?php
-            $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+            $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
             $sql = 'SELECT * FROM usuarios ';
             foreach($pdo->query($sql)as $row){
                 if($row["usuario"] == $_SESSION['usuario']){
@@ -333,12 +333,12 @@ include('../../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Usuários Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT usuario FROM usuarios";
                   foreach($pdo->query($sql)as $row){
                     $usuario_cadastrado =  $row['usuario']; 
                     
-                    $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_cadastrado WHERE DATE(data_atual) = date('now') ";
                         foreach($pdo->query($sql)as $row){
                           echo ''.$usuario_cadastrado.'<br>';
@@ -354,12 +354,12 @@ include('../../../assets/customizar/customiza.php');
                 <span class="info-box-text"> <a href="" style="color: inherit;">Acessos do dia </a></span>
                 <span class="info-box-number">
                   <?php
-                  $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT usuario FROM usuarios";
                   foreach($pdo->query($sql)as $row){
                     $usuario_acessou =  $row['usuario']; 
                     
-                    $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE DATE(data_atual) = date('now') ";
                         foreach($pdo->query($sql)as $row){
                           if($row['acessou'] == 0){
@@ -380,12 +380,12 @@ include('../../../assets/customizar/customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text"><a href="dashboard/retiradas_do_dia.php" style="color: inherit;">Retiradas do dia</a></span>
                 <span class="info-box-number"><?php  
-                $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                 foreach($pdo->query($sql)as $row){
                 $usuario_selecionado =  $row['usuario'];
                 
-                $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado WHERE DATE(data_atual) = date('now') ";
                 foreach($pdo->query($sql)as $row){
                   if($row['quantidade'] == 0){
@@ -411,7 +411,7 @@ include('../../../assets/customizar/customiza.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_baixa()" style="color: inherit;">Produtos em baixa</a></span>
                 <span class="info-box-number">
                   <?php
-                  $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT * FROM produtos";
                   $contador = 0;
                   $produtos_em_baixa = array();
@@ -433,7 +433,7 @@ include('../../../assets/customizar/customiza.php');
                       }
                       
                   }
-                $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $stmt = $pdo->query('SELECT * FROM usuarios');
                 $row_count = $stmt->fetchColumn();
                 foreach(range(0,$row_count[0] -1) as $i){
@@ -476,8 +476,8 @@ function produtos_em_baixa() {
     <div class="card-body p-0">
 
 
-              <?php  
-                $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+  <?php  
+    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = 'SELECT * FROM informacoes ORDER BY informacao ASC';
   foreach($pdo->query($sql)as $row){
 
@@ -548,7 +548,7 @@ function produtos_em_baixa() {
 
               <?php  
                 //require '../../../databases/database.php';
-                $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                       $usuario = $row['usuario'];
@@ -562,7 +562,7 @@ function produtos_em_baixa() {
                             </div>
                             <div class="card-body p-0">
                             <ul class="products-list product-list-in-card pl-2 pr-2">';
-                      $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM retiradas_$usuario ORDER BY id DESC limit 8";
                       foreach($pdo->query($sql)as $row){
                       echo '<li class="item">
@@ -620,7 +620,7 @@ function produtos_em_baixa() {
                           <select class="form-control float-right" name="funcionario" id="funcionario" >
                               <option class="input100" value="selecione">Selecione o funcionário</option>
                               <?php 
-                               $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+                               $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                                $sql = "SELECT usuario FROM usuarios";
                                foreach($pdo->query($sql)as $row){
                                 echo '<option class="input100" value="'.$row['usuario'].'">'.ucfirst($row['usuario']).'</option>';
@@ -674,7 +674,7 @@ if (isset($_GET['periodo'])) {
 
 
 
-  $pdo = new PDO('sqlite:../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = "SELECT * FROM retiradas_$funcionario WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') >= '$periodo1'   ";
   foreach($pdo->query($sql)as $row){
 

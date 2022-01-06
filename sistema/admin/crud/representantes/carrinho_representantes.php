@@ -36,7 +36,7 @@ $quantidade =  $_GET['quantidade'];
 
 
 //seta os itens com fetchall
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sth = $pdo->prepare("SELECT * FROM produtos WHERE id= '$idprod'");
 $sth->execute();
 $items = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -85,7 +85,7 @@ echo '<div id="snackbar">Produto adicionado no carrinho..</div>
 
 //------CRIA A TABELA DA COMPRA
   $nome_db = date('Y_m_d_H');        
-  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $sql = "CREATE TABLE IF NOT EXISTS `carrinho_representante_$representante` (
     `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -143,9 +143,9 @@ if (isset($_GET['confirma'])) {
      }
    }
 //------INSERE OS DADOS DO PEDIDO DO REPRESETANTE NA TABELA CRIADA
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "INSERT INTO carrinho_representante_$representante  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, pago, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,'nao',NOW())";
+$sql = "INSERT INTO carrinho_representante_$representante  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, pago, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,'nao',date('now'))";
 $q = $pdo->prepare($sql);
 $q->execute(array(implode(",",$produto_array), implode(",",$tipo_produto_array), implode(",",$genero_array), implode(",",$imagem_array), implode(",",$referencia_array), implode(",",$cor_array), implode(",",$tamanho_array), implode(",",$codigo_barra_array), implode(",",$valor_array),implode(",",$lote_array), implode(",",$quantidade_array)));
 
@@ -267,7 +267,7 @@ include('customiza.php');
     $rep = $_GET['representante'];
 
 
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $sql = "SELECT * FROM representantes WHERE representante = '$representante'";
     foreach($pdo->query($sql)as $row){
     echo '<!-- Main content -->
@@ -615,7 +615,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_fpu'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -659,7 +659,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_repelente'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -703,7 +703,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_termica'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -747,7 +747,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_ciclismo'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -791,7 +791,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'bermuda'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -835,7 +835,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'calca'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -879,7 +879,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'jaqueta'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -923,7 +923,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'lycra'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -967,7 +967,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'neolycra'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1012,7 +1012,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_adulto'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1057,7 +1057,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_homologado'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1102,7 +1102,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_eaf'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1146,7 +1146,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_kite'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1196,7 +1196,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_kids'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1243,7 +1243,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids_homologado'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1287,7 +1287,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1332,7 +1332,7 @@ include('customiza.php');
                 <div class="row">
                   <?php  
                   
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'sapatilha'";
                     foreach($pdo->query($sql)as $row){
                     echo '

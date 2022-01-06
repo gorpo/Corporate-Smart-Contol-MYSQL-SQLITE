@@ -18,7 +18,7 @@ $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../../databases/database.php';
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['usuario'] == $_SESSION['nome']){
@@ -171,7 +171,7 @@ include('customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Total de Produtos Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT produto FROM produtos";
                   $contador_produtos = 0;
                   foreach($pdo->query($sql)as $row){
@@ -190,7 +190,7 @@ include('customiza.php');
                 <span class="info-box-text"><a href="" onclick="produtos_em_baixa()" style="color: inherit;">Total de Produtos em Baixa</a></span>
                 <span class="info-box-number">
                   <?php
-              $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+              $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM produtos";
               $contador = 0;
               $produtos_em_baixa = array();
@@ -235,7 +235,7 @@ include('customiza.php');
                 <span class="info-box-text"> <a href="" onclick="produtos_acima_estoque()"  style="color: inherit;">Total de Produtos Acima do Estoque </a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_acima_estoque = array();
@@ -280,7 +280,7 @@ include('customiza.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_falta()" style="color: inherit;">Total de Produtos em Falta</a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_em_falta = array();
@@ -330,7 +330,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_fpu' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -359,7 +359,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_repelente' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -389,7 +389,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_termica' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -418,7 +418,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_ciclismo' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -449,7 +449,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'lycra' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -479,7 +479,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'neolycra' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -509,7 +509,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'bermuda' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -537,7 +537,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'calca' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -566,7 +566,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'jaqueta' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -595,7 +595,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_adulto' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -624,7 +624,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_homologado' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -653,7 +653,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_eaf' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -681,7 +681,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_kite' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -712,7 +712,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -741,7 +741,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_kids' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">
@@ -771,7 +771,7 @@ include('customiza.php');
         </div></div>
         <div class="card-body p-0 " style="margin-left:20px; margin-right: 20px;">
                       <?php  
-                        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                         $sql = "SELECT * FROM produtos WHERE tipo_produto = 'sapatilha' ORDER BY produto ASC";
                         foreach($pdo->query($sql)as $row){
                         echo '<div class="progress-group">

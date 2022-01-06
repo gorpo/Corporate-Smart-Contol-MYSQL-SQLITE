@@ -58,7 +58,7 @@ if($update_field && $input['id']) {
         <tr> <!--<table id="data_table"  class="table table-bordered table-striped">-->
 
             <?php
-            $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+            $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
             $q = $pdo->prepare("DESCRIBE produtos");
             $q->execute();
             $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);

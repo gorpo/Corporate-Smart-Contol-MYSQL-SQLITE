@@ -22,7 +22,7 @@ $usuario = $_SESSION['nome'];
 //-------------------DELETA OS PRODUTOS --------------
 if(isset($_GET['deletar'])){
     $id = $_GET['deletar'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
@@ -130,7 +130,7 @@ if(isset($_GET['deletar'])){
 <!-- ================================================  MENUS DA ESQUERDA ================================================ -->
 <?php 
 include('menu.php'); 
-include('customiza.php'); 
+//include('customiza.php'); 
 ?>
 <!-- Sidebar Menu -->
 
@@ -170,7 +170,7 @@ include('customiza.php');
               <div class="info-box-content">
                 <span class="info-box-text">Usuários Cadastrados</span>
                 <span class="info-box-number"><?php
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM usuarios";
                 $contador_usuarios = 0;
                 foreach($pdo->query($sql)as $row){
@@ -311,7 +311,7 @@ include('customiza.php');
         <span class="info-box-text"><a href="" onclick="produtos_em_baixa()" style="color: inherit;">Total de Produtos em Baixa</a></span>
         <span class="info-box-number">
           <?php
-          $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+          $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
           $sql = "SELECT * FROM produtos";
           $contador = 0;
           $produtos_em_baixa = array();
@@ -356,7 +356,7 @@ function produtos_em_baixa() {
       <span class="info-box-text"> <a href="" onclick="produtos_acima_estoque()"  style="color: inherit;">Total de Produtos Acima do Estoque </a></span>
       <span class="info-box-number">
         <?php
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $sql = "SELECT * FROM produtos";
         $contador = 0;
         $produtos_acima_estoque = array();
@@ -401,7 +401,7 @@ function produtos_acima_estoque() {
         <span class="info-box-text"><a href=""  onclick="produtos_em_falta()" style="color: inherit;">Total de Produtos em Falta</a></span>
         <span class="info-box-number">
           <?php
-          $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+          $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
           $sql = "SELECT * FROM produtos";
           $contador = 0;
           $produtos_em_falta = array();
@@ -444,16 +444,6 @@ function produtos_em_falta() {
 
 
 
-
-
-
-
-
-
-
-
-
-
 <!-- =========================================MODALS EXTERNOS E TABELA EDITAVEL PHP MYSQL ================================================ -->
 
 <?php include('modal_cadastro_produtos.php'); ?>
@@ -486,5 +476,5 @@ function produtos_em_falta() {
 </body>
 </html>
 <?php 
-include_once('chat.php');
+//include_once('chat.php');
 ?>

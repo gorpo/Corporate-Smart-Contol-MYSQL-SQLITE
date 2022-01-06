@@ -18,7 +18,7 @@ $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../../databases/database.php';
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['usuario'] == $_SESSION['nome']){
@@ -173,7 +173,7 @@ include('customiza.php');
               <option value="0">Selecione:</option>
               <?php  
                
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT usuario FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                     echo '<option value="'.$row['usuario'].'">'.$row['usuario'].'</option>';
@@ -193,7 +193,7 @@ include('customiza.php');
               if(isset($_GET['lista_usuarios'])){
                 $pega_usuario =  $_GET['lista_usuarios'];
                 $usuario_selecionado = "retiradas_".$_GET['lista_usuarios']. "";
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM $usuario_selecionado WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = date('now') ORDER BY id DESC ";
                 foreach($pdo->query($sql)as $row){
                 echo '<li class="item">
@@ -205,7 +205,7 @@ include('customiza.php');
                                   }
                   
                 }else{
-              $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+              $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM retiradas_asd WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = date('now')  ORDER BY id DESC ";
               foreach($pdo->query($sql)as $row){
                 echo '<li class="item">

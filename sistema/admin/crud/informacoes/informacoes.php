@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //---------------------------------------------------------------------------------------------------------------------
 //Inserindo  na database:
     if ($validacao) {
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "INSERT INTO informacoes (informacao,confirmacao,status,data) VALUES(?,?,?,date('now'))";
         $q = $pdo->prepare($sql);
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Bloco if utilizado pela etapa Delete
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM informacoes where id = ?";
     $q = $pdo->prepare($sql);
@@ -70,7 +70,7 @@ if(isset($_GET['id_confirmacao'])){
   $confirmacao = 'executado';
   $status= $_GET['status'];
 
-  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $sql = "UPDATE informacoes_estoque set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
@@ -283,7 +283,7 @@ include('customiza.php');
 
 
               <?php  
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = 'SELECT * FROM informacoes ORDER BY informacao ASC';
   foreach($pdo->query($sql)as $row){
 
@@ -359,7 +359,7 @@ include('customiza.php');
                 <tbody>
                     <?php
         //include '../../../../databases/database.php';
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $sql = 'SELECT * FROM informacoes ORDER BY id DESC';
 
         foreach($pdo->query($sql)as $row)

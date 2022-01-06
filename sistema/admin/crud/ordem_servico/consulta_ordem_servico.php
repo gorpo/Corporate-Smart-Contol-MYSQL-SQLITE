@@ -20,7 +20,7 @@ $usuario = $_SESSION['nome'];
 
 
 //CRIA A TABELA DE ORDEM DE SERVIÇO CASO NAO EXISTA
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = $pdo->prepare("CREATE TABLE IF NOT EXISTS ordem_servico (
 id INTEGER PRIMARY KEY   AUTOINCREMENT,
@@ -29,7 +29,7 @@ quantidade varchar(300) DEFAULT NULL,
 data datetime DEFAULT NULL
  )");
 $sql->execute();
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 
 
 //Acompanha os erros de validação
@@ -85,9 +85,9 @@ if(isset($_GET['gravar'])){
     $quantidade_array[] = $value['quantidade'];
   }
  }
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "INSERT INTO  ordem_servico  (produto, quantidade, data) VALUES(?,?,NOW())";
+$sql = "INSERT INTO  ordem_servico  (produto, quantidade, data) VALUES(?,?,date('now'))";
 $q = $pdo->prepare($sql);
 $q->execute(array(implode(",",$produto_array),implode(",",$quantidade_array)));
 
@@ -105,7 +105,7 @@ header("Location: print.php?informacao=$informacao");
 //-------------------DELETA OS PRODUTOS --------------
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
@@ -274,7 +274,7 @@ include('customiza.php');
                 <select class="input100" name="ordem_servico" id="ordem_servico" onchange="submit();">
                     <option class="input100" value="">Selecione</option>
                     <?php 
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM ordem_servico";
                       foreach($pdo->query($sql)as $row){
                         echo '<option class="input100" value="'.$row['id'].'">O.S. '.$row['id'].'</option>';
@@ -315,7 +315,7 @@ include('customiza.php');
                               
                     //pega a id da tabela de ordem de serviços para dar o numero da ordem de serviço
                     $id = $_GET['ordem_servico'];
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM ordem_servico WHERE id = '$id'";
                       foreach($pdo->query($sql)as $row){
                         $id = $row['id'];
@@ -323,7 +323,7 @@ include('customiza.php');
                         $quantidade_array = explode(",",$row['quantidade']);
                         $data = $row['data'];
                         foreach ($produto_array as $key => $value) {
-                          $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                          $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                           $sql = "SELECT * FROM produtos WHERE id = '$value'";
                             foreach($pdo->query($sql)as $row){
                               $produto = $row['produto'];

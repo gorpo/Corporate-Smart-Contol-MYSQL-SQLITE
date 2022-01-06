@@ -178,9 +178,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $quantidade2anos = $_POST['quantidade2anos'];
                 //Inserindo no database:
                  if ($validacao) {
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($produto, $tipo_produto, $genero,$imagem, $referencia, $cor, $tamanho2anos, $codigo_barra2anos, $valor,$lote, $quantidade2anos));
                     
@@ -193,9 +193,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $quantidade4anos = $_POST['quantidade4anos'];
             //Inserindo no database:
              if ($validacao) {
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+                $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($produto, $tipo_produto, $genero,$imagem, $referencia, $cor, $tamanho4anos, $codigo_barra4anos, $valor,$lote, $quantidade4anos));
                 
@@ -208,9 +208,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $quantidade6anos = $_POST['quantidade6anos'];
                 //Inserindo no database:
                  if ($validacao) {
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($produto, $tipo_produto, $genero,$imagem, $referencia, $cor, $tamanho6anos, $codigo_barra6anos, $valor,$lote, $quantidade6anos));
                     
@@ -223,9 +223,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $quantidade8anos = $_POST['quantidade8anos'];
                 //Inserindo no database:
                  if ($validacao) {
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+                    $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($produto, $tipo_produto, $genero,$imagem, $referencia, $cor, $tamanho8anos, $codigo_barra8anos, $valor,$lote, $quantidade8anos));
                     
@@ -340,7 +340,7 @@ if(isset($_POST["submit"])){
 //-------------------DELETA OS PRODUTOS --------------
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
@@ -729,7 +729,7 @@ include('customiza.php');
 <tbody>
 <!-- -------------- CODIGO PHP DA PESQUISA E CRUD DOS PRODUTOS------------- -->
 <?php
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $info = null;
 
   if(isset($_GET['buscar'])){
@@ -780,7 +780,7 @@ $info = null;
   }   
 }else{
   //sistema do CRUD ------------------------------------------------------------------------------>
-  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = $pdo->prepare("SELECT * FROM produtos WHERE  tamanho LIKE '2 Anos' OR tamanho LIKE '4 Anos' OR tamanho LIKE '6 Anos' OR tamanho LIKE '8 Anos' ");
   $sql->execute();
   $info = $sql->fetchAll();

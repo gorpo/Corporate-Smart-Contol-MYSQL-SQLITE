@@ -12,7 +12,7 @@ if(isset($_GET['id'])){
       $usuario = $_SESSION['nome'];
       echo $quantidade;
       $buscar = $_GET['buscar'];
-      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $sql = $pdo->prepare("UPDATE produtos SET quantidade = quantidade + $quantidade WHERE id = $id");
       $sql->execute();

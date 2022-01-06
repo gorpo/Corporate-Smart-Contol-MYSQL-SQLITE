@@ -18,7 +18,7 @@ $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../../databases/database.php';
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['usuario'] == $_SESSION['nome']){
@@ -172,7 +172,7 @@ include('menu.php');
               <div class="info-box-content">
                 <span class="info-box-text">Total de Produtos Cadastrados</span>
                 <span class="info-box-number"><?php
-                  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                   $sql = "SELECT produto FROM produtos";
                   $contador_produtos = 0;
                   foreach($pdo->query($sql)as $row){
@@ -191,7 +191,7 @@ include('menu.php');
                 <span class="info-box-text"><a href="" onclick="produtos_em_baixa()" style="color: inherit;">Total de Produtos em Baixa</a></span>
                 <span class="info-box-number">
                   <?php
-              $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+              $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
               $sql = "SELECT * FROM produtos";
               $contador = 0;
               $produtos_em_baixa = array();
@@ -236,7 +236,7 @@ include('menu.php');
                 <span class="info-box-text"> <a href="" onclick="produtos_acima_estoque()"  style="color: inherit;">Total de Produtos Acima do Estoque </a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_acima_estoque = array();
@@ -281,7 +281,7 @@ include('menu.php');
                 <span class="info-box-text"><a href=""  onclick="produtos_em_falta()" style="color: inherit;">Total de Produtos em Falta</a></span>
                 <span class="info-box-number">
                   <?php
-                    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos";
                     $contador = 0;
                     $produtos_em_falta = array();

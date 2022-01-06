@@ -19,7 +19,6 @@ $mail = new PHPMailer(true);
 $mail->CharSet = 'UTF-8';
 
 try {
-    
     //Server settings
     //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                                                     //Enable verbose debug output
     $mail->isSMTP();                                                                 //Send using SMTP
@@ -61,7 +60,7 @@ $mail->send();
   header('Location: cadastro_usuarios.php?envio=enviado');
 
 } catch (Exception $e) {
-    echo "Seu pedido foi computado mas tivemos um erro ao enviar o email, informe a nossa equipe pelo email criacao@vopen.com.br o codigo de erro: {$mail->ErrorInfo}";
+    echo "Seu pedido foi computado mas tivemos um erro ao enviar o email, informe a nossa equipe pelo email suporte@corporatesmartcontrol.com o codigo de erro: {$mail->ErrorInfo}";
 }
 
 

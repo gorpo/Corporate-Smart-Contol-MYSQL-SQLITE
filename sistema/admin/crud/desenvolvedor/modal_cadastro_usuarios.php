@@ -4,7 +4,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Usuários Cadastrados</span>
                 <span class="info-box-number"><?php
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM usuarios";
                 $contador_usuarios = 0;
                 foreach($pdo->query($sql)as $row){

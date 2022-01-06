@@ -117,9 +117,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 //Inserindo no database:
      if ($validacao) {
-        $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+        $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())";
+        $sql = "INSERT INTO  produtos  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,date('now'))";
         $q = $pdo->prepare($sql);
         $q->execute(array($produto, $tipo_produto, $genero, $imagem, $referencia, $cor, $tamanho, $codigo_barra, $valor,$lote, $quantidade));
         
@@ -230,7 +230,7 @@ if(isset($_POST["submit"])){
 //========= FUNÇÃO USADA PELA ETAPA DO DELETE ==================
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+    $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM produtos where id = ?";
     $q = $pdo->prepare($sql);
@@ -392,7 +392,7 @@ include('customiza.php');
                 <select class="input100" name="produtos_cadastrados" id="produtos_cadastrados" > <!-- onchange="submit();"> -->
                     <option class="input100" value="">Selecione o Tipo de Produto</option>
                     <?php  
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = 'SELECT * FROM produtos ORDER BY tipo_produto ASC';
                       $array_tipo_produto = array();
                       foreach($pdo->query($sql)as $row){
@@ -419,7 +419,7 @@ include('customiza.php');
                 <select class="input100" name="genero_cadastrado" id="genero_cadastrado" > <!-- onchange="submit();"> -->
                     <option class="input100" value="">Selecione o Gênero</option>
                     <?php  
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = 'SELECT * FROM produtos ORDER BY genero ASC';
                       $array_genero = array();
                       foreach($pdo->query($sql)as $row){
@@ -445,7 +445,7 @@ include('customiza.php');
                 <select class="input100" name="cor_cadastrado" id="cor_cadastrado" > <!-- onchange="submit();"> -->
                     <option class="input100" value="">Selecione a Cor</option>
                     <?php  
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = 'SELECT * FROM produtos ORDER BY cor ASC';
                       $array_cor = array();
                       foreach($pdo->query($sql)as $row){
@@ -471,7 +471,7 @@ include('customiza.php');
                 <select class="input100" name="tamanho_cadastrado" id="tamanho_cadastrado" > <!-- onchange="submit();"> -->
                     <option class="input100" value="">Selecione o Tamanho</option>
                     <?php  
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = 'SELECT * FROM produtos ORDER BY tamanho ASC';
                       $array_tamanho = array();
                       foreach($pdo->query($sql)as $row){
@@ -514,7 +514,7 @@ include('customiza.php');
 <!-- ============================== TABELA DE PRODUTOS ==============================   -->
 <tbody>
 <?php
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $info = null;
 
   if(isset($_GET['buscar'])){
@@ -769,7 +769,7 @@ elseif(isset($_GET['produtos_cadastrados'])){
                 <h3 class="card-title">Todos os Produtos </h3>
               </div>
               <div class="card-body">';  
-  $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+  $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $sql = 'SELECT * FROM produtos ORDER BY produto ASC';
   foreach($pdo->query($sql)as $row)
   {

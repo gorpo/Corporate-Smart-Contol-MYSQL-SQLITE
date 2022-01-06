@@ -94,7 +94,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
                 $pdo = Database::conectar();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = $pdo->prepare("INSERT INTO `user_cpmvj` ( `user_first_name`, `user_last_name`, `user_email`, `user_password`, `user_image`, `user_status`,`user_datetime`, `user_verification_code`) VALUES 
-                (?,?,?,?,?,?,now(),?);");
+                (?,?,?,?,?,?,date('now'),?);");
                 $sql->execute(array( $nome, $sobrenome, $email, $senha, $imagem, 'Offline',  bin2hex(random_bytes(16))));
                 $pdo = Database::desconectar();
 
@@ -191,8 +191,6 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "" && $usuari
         Database::desconectar();
 
 
-
-
         $stmt = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
@@ -200,19 +198,15 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "" && $usuari
         } 
         
     } catch (PDOException $erro) {
-        echo $erro;
+        //echo $erro;
     }
 }
 
 
 
-// Bloco if utilizado pela etapa Delete
+// Bloco if utilizado pela etapa Delete dos representantes
 if (isset($_REQUEST["act2"]) && $_REQUEST["act2"] == "del2" && $id != "" && $usuario != "" ) {
-    $stmt = $conexao->prepare("drop table user_$usuario");
-    $stmt->execute();
- 
-    try {
-        echo $usuario;
+   try {
         $stmt = $conexao->prepare("DELETE FROM login_representantes WHERE id = ?");
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -222,12 +216,6 @@ if (isset($_REQUEST["act2"]) && $_REQUEST["act2"] == "del2" && $id != "" && $usu
             $id = null;
         } else {
             echo "<p class=\"bg-danger\">Erro: Não foi possível executar a declaração sql</p>";
-        }
-        if ($stmt2->execute()) {
-            //echo "<p class=\"tituloBranco\">Todos os dados de login e IP do usuário foram deletados.</p>";
-            $usuario = null;
-        } else {
-            echo "<p class=\"tituloBranco\">Erro: Não foi possível executar a declaração sql</p>";
         }
     } catch (PDOException $erro) {
         //echo "<p class=\"tituloBranco\">Usuário ainda não tinha logado no sistema, sem database de IP para deletar.</a>";
@@ -620,6 +608,7 @@ include('menu.php');
 
                 <?php
                     try {
+                        $stmt = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
                         $stmt = $conexao->prepare("SELECT * FROM usuarios");
                         if ($stmt->execute()) {
                             while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
@@ -649,7 +638,9 @@ include('menu.php');
 
                     <!--   ==================================== EXIBE OS REPRESENTANTES CADASTRADOS PARA USAR O SISTEMA - CASO QUEIRA OCULTAR SO DELETAR ABAIXO    --->
                     <?php
-                    try {$stmt = $conexao->prepare("SELECT * FROM login_representantes");
+                    try {
+                        $stmt = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
+                        $stmt = $conexao->prepare("SELECT * FROM login_representantes");
                         if ($stmt->execute()) {
                             while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
                     ?>

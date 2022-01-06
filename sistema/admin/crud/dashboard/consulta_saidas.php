@@ -19,7 +19,7 @@ $usuario = $_SESSION['nome'];
 
 //Verifica se é usuario, se for redireciona para a home dos usuarios
 //require '../../databases/database.php';
-$pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+$pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sql = "SELECT * FROM usuarios";
 foreach($pdo->query($sql)as $row){
   if($row['usuario'] == $_SESSION['nome']){
@@ -176,7 +176,7 @@ include('customiza.php');
             
               <?php  
                 //
-                $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                 $sql = "SELECT * FROM usuarios";
                     foreach($pdo->query($sql)as $row){
                       $usuario = $row['usuario'];
@@ -200,7 +200,7 @@ include('customiza.php');
                             </div>
                             <div class="card-body p-0">
                             <ul class="products-list product-list-in-card pl-2 pr-2">';
-                      $pdo = new PDO('sqlite:../../../../databases/'.$email.'.db');
+                      $pdo = new PDO('sqlite:../../../../databases/'.$_SESSION['email_cliente'].'.db');
                       $sql = "SELECT * FROM retiradas_$usuario ORDER BY id DESC ";
                       foreach($pdo->query($sql)as $row){
                       echo '<li class="item">
