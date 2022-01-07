@@ -32,3 +32,5 @@ if(is_null($total_column[0]))
     {
       echo 'oi';
     }
+
+    ATENÇAO TROCAR @_session['email_cliente'] por $email_cliente_cadastrado nos login.php

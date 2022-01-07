@@ -63,7 +63,7 @@ $usuario = $_SESSION['nome'];
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="" src="../../assets/images/logo.svg" height="600" width="600">
-  </div>
+  </div> 
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="navbar_cor"> 
@@ -200,7 +200,7 @@ include('customiza.php');
                     
                     $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     //$sql = "SELECT * FROM user_$usuario_selecionado";
-                    $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_cadastrado WHERE DATE(data_atual) = CURDATE() ";
+                    $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_cadastrado WHERE DATE(data_atual) = date('now') ";
                         foreach($pdo->query($sql)as $row){
                           echo ''.$usuario_cadastrado.'<br>';
                         }}
@@ -222,7 +222,7 @@ include('customiza.php');
                     
                     $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
                     //$sql = "SELECT * FROM user_$usuario_selecionado";
-                    $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE DATE(data_atual) = CURDATE() ";
+                    $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE DATE(data_atual) = date('now') ";
                         foreach($pdo->query($sql)as $row){
                           if($row['acessou'] == 0){
                             echo '<br>';
@@ -247,7 +247,7 @@ include('customiza.php');
                 $usuario_selecionado =  $row['usuario'];
                 
                 $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado WHERE DATE(data_atual) = CURDATE() ";
+                $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado WHERE DATE(data_atual) = date('now') ";
                 foreach($pdo->query($sql)as $row){
                   if($row['quantidade'] == 0){
                             //echo '<br>';

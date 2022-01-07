@@ -38,7 +38,143 @@ foreach($info as $key => $row){
 		exit();
 	}else{
 		if($row['email'] == $email){
-			
+
+				//CRIA A TABELA DE USUARIOS NAO EXISTA
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `usuarios` (
+			    `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+			    `nome` varchar(200) NOT NULL,
+			    `sobrenome` varchar(200) NOT NULL,
+			    `usuario` varchar(200) NOT NULL,
+			    `telefone` varchar(200) NOT NULL,
+			    `email` varchar(329) NOT NULL,
+			    `email_cliente` varchar(329) NOT NULL,
+			    `senha` varchar(999) NOT NULL,
+			    `nivel` varchar(999) NOT NULL,
+			    `prazo` varchar(999) NOT NULL,
+			    `imagem` varchar(999) NOT NULL,
+			    `cadastro` datetime NOT NULL,
+			    `token` varchar(999) NOT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA DE CUSTOMIZAÇÃO
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `customizar` (
+			      `id` int(11) NOT NULL,
+				  `dark_mode` varchar(200) NOT NULL,
+				  `fixar_cabecalho` varchar(200) NOT NULL,
+				  `dropdown_legacy` varchar(200) NOT NULL,
+				  `sem_bordas` varchar(200) NOT NULL,
+				  `menu_fechado` varchar(200) NOT NULL,
+				  `menu_flat` varchar(200) NOT NULL,
+				  `menu_legacy` varchar(200) NOT NULL,
+				  `menu_compact` varchar(200) NOT NULL,
+				  `submenu` varchar(200) NOT NULL,
+				  `submenu_esconder` varchar(200) NOT NULL,
+				  `desabilitar_auto_expand` varchar(200) NOT NULL,
+				  `fixa_rodape` varchar(200) NOT NULL,
+				  `texto_corpo` varchar(200) NOT NULL,
+				  `texto_barra_navegacao` varchar(200) NOT NULL,
+				  `texto_logotipo` varchar(200) NOT NULL,
+				  `texto_barra_lateral` varchar(200) NOT NULL,
+				  `texto_rodape` varchar(200) NOT NULL,
+				  `cor_barra_topo` varchar(200) NOT NULL,
+				  `cor_logo` varchar(200) NOT NULL,
+				  `cor_menu_esquerda` varchar(200) NOT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA DE INFORMACOES
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `informacoes` (
+				  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `informacao` varchar(999) NOT NULL,
+				  `confirmacao` varchar(999) NOT NULL,
+				  `status` varchar(999) NOT NULL,
+				  `data` datetime NOT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA DE LOGIN REPRESENTANTES
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `login_representantes` (
+			      `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `usuario` varchar(200) NOT NULL,
+				  `imagem` varchar(200) NOT NULL,
+				  `senha` varchar(329) NOT NULL,
+				  `nome` varchar(999) NOT NULL,
+				  `cadastro` datetime NOT NULL,
+				  `nivel` varchar(999) NOT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA REPRESENTANTES
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `representantes` (
+				  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `imagem` varchar(300) DEFAULT NULL,
+				  `representante` varchar(300) DEFAULT NULL,
+				  `nome_fantasia` varchar(300) DEFAULT NULL,
+				  `cnpj` varchar(300) DEFAULT NULL,
+				  `inscricao_estadual` varchar(300) DEFAULT NULL,
+				  `email` varchar(300) DEFAULT NULL,
+				  `telefone` varchar(300) DEFAULT NULL,
+				  `endereco` varchar(300) DEFAULT NULL,
+				  `cidade` varchar(300) DEFAULT NULL,
+				  `estado` varchar(300) DEFAULT NULL,
+				  `cep` varchar(300) DEFAULT NULL,
+				  `data_atual` datetime DEFAULT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA ORDEM DE SERVICO
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `ordem_servico` (
+				  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `produto` varchar(300) DEFAULT NULL,
+				  `quantidade` varchar(300) DEFAULT NULL,
+				  `data` datetime DEFAULT NULL
+			    );");
+			    $sql->execute();
+			    
+
+			    //CRIA A TABELA DE PRODUTOS
+			    $pdo = new PDO('sqlite:../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `produtos` (
+				  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `produto` varchar(200) NOT NULL,
+				  `tipo_produto` varchar(200) NOT NULL,
+				  `genero` varchar(200) NOT NULL,
+				  `imagem` varchar(329) NOT NULL,
+				  `referencia` varchar(999) NOT NULL,
+				  `cor` varchar(329) NOT NULL,
+				  `tamanho` varchar(999) NOT NULL,
+				  `codigo_barra` varchar(999) NOT NULL,
+				  `valor` varchar(999) NOT NULL,
+				  `lote` varchar(999) NOT NULL,
+				  `quantidade` varchar(999) NOT NULL,
+				  `data` datetime NOT NULL
+			    );");
+			    $sql->execute();
+
+
+			    include('../databases/dump_produtos.php');
+
+
+
 			    //pega os dados no banco principal para gravar no banco do usuario
 			    $pdo = Database::conectar();
 			    $sql = $pdo->prepare("SELECT * FROM `usuarios` WHERE email = '$email'  ");
@@ -64,7 +200,7 @@ foreach($info as $key => $row){
 			    if($email_cadastrado == $email){
 			        	//VALIDA O BANCO DE DADOS
 			        	//verifica se a db esta vazia ou tem dados na tabela dos usurios
-			        	$pdo = new PDO('sqlite:../databases/'.$_SESSION['email_cliente'].'.db');
+			        	$pdo = new PDO('sqlite:../databases/'.$email_cliente_cadastrado.'.db');
 						$select = $pdo->query('SELECT * FROM usuarios');
 						$total_column = $select->fetchColumn();
 					    if(is_null($total_column[0])){
@@ -77,21 +213,21 @@ foreach($info as $key => $row){
 					    //se a db esta vazia ele cadastra somente o adm
 					    if($verifica_db == '0'){
 					    		//cria a tabela de login que armazena dados como ip dos usuarios caso nao exista
-							    $pdo = new PDO('sqlite:../databases/'.$_SESSION['email_cliente'].'.db');
+							    $pdo = new PDO('sqlite:../databases/'.$email_cliente_cadastrado.'.db');
 							    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 							    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `user_$usuario_cadastrado` (
 							    `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
 							    `usuario` varchar(200) NOT NULL,
 							    `senha` varchar(999) NOT NULL,
 							    `ip` varchar(999) NOT NULL,
-							    `data_atual` datetime NOT NULL,
+							    `data_atual` varchar(300) DEFAULT NULL,
 							    `cor` varchar(999) NOT NULL
 							    );");
 							    $sql->execute();
 							    
 
 							    //CRIA A TABELA RETIRADAS DO USUARIO
-							    $pdo = new PDO('sqlite:../databases/'.$_SESSION['email_cliente'].'.db');
+							    $pdo = new PDO('sqlite:../databases/'.$email_cliente_cadastrado.'.db');
 							    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 							    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `retiradas_$usuario_cadastrado` (
 								  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
@@ -106,7 +242,7 @@ foreach($info as $key => $row){
 								  `codigo_barra` varchar(300) DEFAULT NULL,
 								  `lote` varchar(300) DEFAULT NULL,
 								  `quantidade` varchar(300) DEFAULT NULL,
-								  `data_atual` datetime DEFAULT NULL
+								  `data_atual` varchar(300) DEFAULT NULL
 							    );");
 							    $sql->execute();
 
@@ -119,7 +255,7 @@ foreach($info as $key => $row){
 								Database::desconectar();
 
 
-					    		$pdo = new PDO('sqlite:../databases/'.$_SESSION['email_cliente'].'.db');
+					    		$pdo = new PDO('sqlite:../databases/'.$email_cliente_cadastrado.'.db');
 					            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 					            $sql = $pdo->prepare("INSERT INTO `usuarios` (`nome`,`sobrenome`,`usuario`, `telefone`, `email`,`email_cliente`, `senha`, `nivel`, `prazo`,`imagem`, `cadastro`, `token`) VALUES 
 					            (?,?,?,?,?,?,?,?,?,?,?,?);");
@@ -151,7 +287,7 @@ foreach($info as $key => $row){
 								$_SESSION['data'] = $data_cadastrada;
 								$_SESSION['prazo'] = $prazo_cadastrado;
 								$_SESSION['token'] = $token_cadastrado;
-								header('Location: estoque/index.php');
+								header('Location: crud/index.php');
 								echo 'fim';
 								}//else
 						}//if		
@@ -162,28 +298,27 @@ foreach($info as $key => $row){
 //VALIDA LOGIN APOS CADASTRO DO ADM	
 //verifica se usuario/adm esta cadastrado no banco do adm		
 if($verifica_db == '1'){	
-$pdo = new PDO('sqlite:../databases/'.$_SESSION['email_cliente'].'.db');
-$sql = "SELECT * FROM usuarios WHERE token = '$token'";
-foreach($pdo->query($sql)as $row){
-	if($row['email'] == $email){
-		//envia o usuario para a sessão ou para o login
-		$_SESSION['id'] = $row['id'];
-		$_SESSION['email'] = $row['email'];
-		$_SESSION['email_cliente'] = $row['email_cliente'];
-		$_SESSION['nome'] = $row['nome'];
-		$_SESSION['usuario'] = $row['usuario'];
-		$_SESSION['imagem'] = $row['imagem'];
-		$_SESSION['nivel'] = $row['nivel'];
-		$_SESSION['data'] = $row['cadastro'];
-		$_SESSION['prazo'] = $row['prazo'];
-		$_SESSION['token'] = $row['token'];
-		header('Location: estoque/index.php');
+	$pdo = new PDO('sqlite:../databases/'.$email_cliente_cadastrado.'.db');
+	$sql = "SELECT * FROM usuarios WHERE token = '$token'";
+	foreach($pdo->query($sql)as $row){
+		if($row['email'] == $email){
+			//envia o usuario para a sessão ou para o login
+			$_SESSION['id'] = $row['id'];
+			$_SESSION['email'] = $row['email'];
+			$_SESSION['email_cliente'] = $row['email_cliente'];
+			$_SESSION['nome'] = $row['nome'];
+			$_SESSION['senha'] = $row['senha'];
+			$_SESSION['usuario'] = $row['usuario'];
+			$_SESSION['imagem'] = $row['imagem'];
+			$_SESSION['nivel'] = $row['nivel'];
+			$_SESSION['data'] = $row['cadastro'];
+			$_SESSION['prazo'] = $row['prazo'];
+			$_SESSION['token'] = $row['token'];
+			header('Location: valida_login.php');
+		}
 	}
 }
-
-}
-
-			    
+		    
 //if, else e foreach do inicio do codigo...
 		}//if
 	}//else

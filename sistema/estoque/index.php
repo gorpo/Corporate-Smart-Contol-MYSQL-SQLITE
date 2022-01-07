@@ -259,20 +259,27 @@ include('customiza.php');
                 <span class="info-box-text"> <a href="" style="color: inherit;">Acessos do dia </a></span>
                 <span class="info-box-number">
                   <?php
-                  $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                  $sql = "SELECT usuario FROM usuarios";
-                  foreach($pdo->query($sql)as $row){
-                    $usuario_acessou =  $row['usuario']; 
-                    
                     $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                    $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE DATE(data_atual) = date('now') ";
-                        foreach($pdo->query($sql)as $row){
-                          if($row['acessou'] == 0){
-                            echo "$usuario_acessou:0<br>";
-                          }
-                          if($row['acessou'] > 0){
-                          echo ''.$usuario_acessou.': '.$row['acessou'].'<br>';
-                        }}}
+                    $sql = "SELECT usuario FROM usuarios";
+                    foreach($pdo->query($sql)as $row){
+                      $usuario_acessou =  $row['usuario']; 
+                    }
+
+                    try{
+                      $data = date('now');
+                      $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
+                        $sql = "SELECT COUNT(usuario) as acessou,data_atual FROM user_$usuario_acessou WHERE data_atual = '$data' ";
+                            foreach($pdo->query($sql)as $row){
+                              if($row['acessou'] == 0){
+                                echo "$usuario_acessou:0<br>";
+                              }
+                              if($row['acessou'] > 0){
+                                echo ''.$usuario_acessou.': '.$row['acessou'].'<br>';
+                              }
+                            }
+                    } catch (Exception $e) {
+                          echo 'Sem dados';
+                      }        
                   ?> 
                 </span>
               </div></div> </div>
@@ -284,24 +291,32 @@ include('customiza.php');
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-dolly-flatbed"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text"><a href="dashboard/retiradas_do_dia.php" style="color: inherit;">Retiradas do dia</a></span>
-                <span class="info-box-number"><?php  
-                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                $sql = "SELECT usuario FROM usuarios";
-                foreach($pdo->query($sql)as $row){
-                $usuario_selecionado =  $row['usuario'];
-                
-                $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado WHERE DATE(data_atual) = date('now') ";
-                foreach($pdo->query($sql)as $row){
-                  if($row['quantidade'] == 0){
-                            //echo '<br>';
-                            echo ''.$usuario_selecionado.': 0<br>';
-                          }
-                  if($row['quantidade'] > 0){
-                            echo ''.$usuario_selecionado.': '.$row['quantidade'].'<br>';
-                          }}}
-                  
-                ?></span>
+                <span class="info-box-number">
+                  <?php  
+                    $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
+                    $sql = "SELECT usuario FROM usuarios";
+                    foreach($pdo->query($sql)as $row){
+                    $usuario_selecionado =  $row['usuario'];
+                     }
+                    try{
+                      $data = date('now');
+                      $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
+                      $sql = "SELECT SUM(quantidade) as quantidade, data_atual FROM retiradas_$usuario_selecionado data_atual = '$data' ";
+                      foreach($pdo->query($sql)as $row){
+                        if($row['quantidade'] == 0){
+                                  echo ''.$usuario_selecionado.': 0<br>';
+                                }
+                        if($row['quantidade'] > 0){
+                                  echo ''.$usuario_selecionado.': '.$row['quantidade'].'<br>';
+                                }
+                      }
+                    } catch (Exception $e) {
+                        echo 'Sem dados';
+                    }
+
+                    
+                  ?>
+                </span>
               </div></div></div>
 
 

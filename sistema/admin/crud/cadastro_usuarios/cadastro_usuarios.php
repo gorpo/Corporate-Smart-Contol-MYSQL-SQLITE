@@ -87,7 +87,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "" && $_RE
 
                   $pdo = new PDO('sqlite:../../../../databases/'.$email_cliente.'.db');
                   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                  $sqla = $pdo->prepare("CREATE TABLE IF NOT EXISTS user_$usuario (id INTEGER PRIMARY KEY   AUTOINCREMENT,usuario VARCHAR(300), senha VARCHAR(300), ip VARCHAR(70), data_atual datetime, cor VARCHAR(300) )");
+                  $sqla = $pdo->prepare("CREATE TABLE IF NOT EXISTS user_$usuario (id INTEGER PRIMARY KEY   AUTOINCREMENT,usuario VARCHAR(300), senha VARCHAR(300), ip VARCHAR(70), data_atual datetime DEFAULT NULL, cor VARCHAR(300) )");
                   $sqla->execute();
 
                   //insere o usuario no banco de dados do chat

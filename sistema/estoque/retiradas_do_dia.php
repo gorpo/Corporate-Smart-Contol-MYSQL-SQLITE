@@ -65,10 +65,10 @@ $usuario = $_SESSION['nome'];
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader -->
+  <!-- Preloader 
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="" src="../../assets/images/logo.svg" height="600" width="600">
-  </div>
+  </div>-->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="navbar_cor"> 
@@ -219,7 +219,7 @@ include('customiza.php');
                 $pega_usuario =  $_GET['lista_usuarios'];
                 $usuario_selecionado = "retiradas_".$_GET['lista_usuarios']. "";
                 $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-                $sql = "SELECT * FROM $usuario_selecionado WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = CURDATE() ORDER BY id DESC ";
+                $sql = "SELECT * FROM $usuario_selecionado WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = date('now') ORDER BY id DESC ";
                 foreach($pdo->query($sql)as $row){
                 echo '<li class="item">
                                 <div class="product-img"> <img src="../../assets/images/produtos/'.$row['imagem'].'" alt="Product Image" class="img-size-50"></div>
@@ -231,7 +231,7 @@ include('customiza.php');
                   
                 }else{
               $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-              $sql = "SELECT * FROM retiradas_$usuario WHERE DATE_FORMAT(data_atual, '%Y-%m-%d') = CURDATE()  ORDER BY id DESC ";
+              $sql = "SELECT * FROM retiradas_$usuario WHERE data_atual = date('now')  ORDER BY id DESC ";
               foreach($pdo->query($sql)as $row){
                 echo '<li class="item">
                 <div class="product-img"> <img src="../../assets/images/produtos/'.$row['imagem'].'" alt="Product Image" class="img-size-50"></div>

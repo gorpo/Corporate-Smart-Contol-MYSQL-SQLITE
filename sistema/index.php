@@ -34,7 +34,7 @@
                           <label for="user_email"></label>
                           <input type="password" class="form-control" id="user_password" placeholder="Senha" name="user_password" autocomplete="off" required>
                           <label for="user_password"></label>
-                          <input type="text" class="" id="user_token" placeholder="token" name="user_token" autocomplete="off" required>
+                          <input type="text" class="" id="user_token" placeholder="Token" name="user_token" autocomplete="on" value="<?php if(isset($_COOKIE['token'])){ echo $_COOKIE['token']; }?>" required>
                           <label for="user_token"></label>
                           <button class="btnlogar" id="login_button" type="submit">Login</button>
                   </form>
