@@ -63,17 +63,16 @@ $mail->CharSet = 'UTF-8';
 try {
     //Server settings
     //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-    $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'mail.vopen.com.br ';                     //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'criacao@vopen.com.br';                     //SMTP username
-    $mail->Password   = 'Criacao2016!';                               //SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    $mail->isSMTP();                                                                 //Send using SMTP
+    $mail->Host       = 'smtp.hostinger.com';           //smtp.hostinger.com                      //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                                    //Enable SMTP authentication
+    $mail->Username   = 'contato@corporatesmartcontrol.com';                                         //SMTP username
+    $mail->Password   = 'CRCdaimonae@1';                                                    //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;                            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                                       //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('criacao@vopen.com.br', 'VOPEN');
-    $mail->addAddress('guilherme-paluch@hotmail.com');     //Add a recipient
+    $mail->setFrom('contato@corporatesmartcontrol.com', 'Corporate Smart Control');
     $mail->addAddress($email);               //Name is optional
     //$mail->addReplyTo('info@example.com', 'Information');
     //$mail->addCC('cc@example.com');
@@ -85,7 +84,7 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Pedido VOPEN - Representante '.ucfirst($representante).'';
+    $mail->Subject = 'Pedido - Representante '.ucfirst($representante).'';
 
     $espacos = '&zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;&zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;';
     
@@ -261,7 +260,7 @@ foreach($pdo->query($sql)as $row){
           <div class="col-sm-4 invoice-col">
     <address>
         <hr style="border: 1px solid #e1dddd;">
-        <strong>VOPEN</strong>  - Rodovia SC-434, 11440 Sala 2 | Garopaba, Santa Catarina | Telefone: (48) 99145.4300    | Email: comercial@vopen.com.br
+        <strong>Corporate Smart Control</strong>    | Email: comercial@corporatesmartcontrol.com.br
     </address>
     </div><br>';
 

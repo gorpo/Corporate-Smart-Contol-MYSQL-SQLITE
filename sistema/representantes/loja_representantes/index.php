@@ -176,17 +176,17 @@ window.setTimeout(function () {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <meta property="og:site_name" content="VOPEN"/>
-  <meta property="og:title" content="VOPEN"/>
-  <meta property="og:url" content="https://vopen.com.br/"/>
-  <meta property="og:description" content="Sistema de administração VOPEN"/>
+  <meta property="og:site_name" content="Corporate Smart Control"/>
+  <meta property="og:title" content="Corporate Smart Control"/>
+  <meta property="og:url" content="https://corporatesmartcontrol.com.br/"/>
+  <meta property="og:description" content="Sistema de administração Corporate Smart Control"/>
   <meta property="og:image" content="../../../assets/images/logo.svg"/>
   <link rel="shortcut icon" href="../../../assets/images/icon.png" />
   <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/a80232805f.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <title>VOPEN | Loja Representantes</title>
+    <title>Corporate Smart Control |  Representantes</title>
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Additional CSS Files -->
