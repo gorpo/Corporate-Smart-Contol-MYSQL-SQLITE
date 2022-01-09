@@ -53,7 +53,7 @@ if(isset($_GET['id'])){
     $id = $_GET['id'];
     $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "DELETE FROM informacoes where id = ?";
+    $sql = "DELETE FROM informacoes_estoque where id = ?";
     $q = $pdo->prepare($sql);
     $q->execute(array($id));
     
@@ -70,7 +70,7 @@ if(isset($_GET['id_confirmacao'])){
 
   $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
+  $sql = "UPDATE informacoes_estoque set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
   $q->bindParam(':informacao', $informacao);
   $q->bindParam(':confirmacao', $confirmacao);
@@ -284,7 +284,7 @@ include('../../../assets/customizar/customiza.php');
 
               <?php  
                 $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
-  $sql = 'SELECT * FROM informacoes ORDER BY informacao ASC';
+  $sql = 'SELECT * FROM informacoes_estoque ORDER BY informacao ASC';
   foreach($pdo->query($sql)as $row){
 
   if($row['confirmacao'] == 'pendente'){
@@ -357,7 +357,7 @@ include('../../../assets/customizar/customiza.php');
                     <?php
         //include '../../../databases/database.php';
         $pdo = new PDO('sqlite: ../../../../../databases/'.$_SESSION['email_cliente'].'.db');
-        $sql = 'SELECT * FROM informacoes ORDER BY id DESC';
+        $sql = 'SELECT * FROM informacoes_estoque ORDER BY id DESC';
 
         foreach($pdo->query($sql)as $row)
         {

@@ -290,7 +290,7 @@ include('customiza.php');
             <div class="info-box mb-3">
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-dolly-flatbed"></i></span>
               <div class="info-box-content">
-                <span class="info-box-text"><a href="dashboard/retiradas_do_dia.php" style="color: inherit;">Retiradas do dia</a></span>
+                <span class="info-box-text"><a href="retiradas_do_dia.php" style="color: inherit;">Retiradas do dia</a></span>
                 <span class="info-box-number">
                   <?php  
                     $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');

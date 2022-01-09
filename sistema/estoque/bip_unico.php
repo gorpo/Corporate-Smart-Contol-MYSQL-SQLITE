@@ -50,7 +50,7 @@ if(isset($_GET['id_confirmacao'])){
 
   $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=now() WHERE id=:id";
+  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
   $q->bindParam(':informacao', $informacao);
   $q->bindParam(':confirmacao', $confirmacao);

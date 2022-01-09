@@ -1,58 +1,158 @@
-<!-- @Guilherme Paluch 2021 --><?php
-// Inicia a sessão
-session_start();
-?>
-
+<!-- @Guilherme Paluch 2021 --> 
 
 <!DOCTYPE html>
-  <head>      
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <meta property="og:site_name" content="VOPEN"/>
-      <meta property="og:title" content="VOPEN"/>
-      <meta property="og:url" content="https://vopen.com.br/"/>
-      <meta property="og:description" content="VOPEN"/>
-      <meta property="og:image" content="../assets/images/logo.svg"/>
-      <link rel="shortcut icon" href="../assets/images/icon.png" />
-      <script src="https://kit.fontawesome.com/a80232805f.js" crossorigin="anonymous"></script>
-      <script src="../assets/js/funcoesLogin.js"></script>
-      <link rel="stylesheet" type="text/css" href="../assets/css/style_login.css" />
-      <title>VOPEN</title>
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta property="og:site_name" content="Corporate - Smart Control" />
+  <meta property="og:title" content="Corporate - Smart Control" />
+  <meta property="og:url" content="https://corporatesmartcontrol.com.br/" />
+  <meta property="og:description" content="Corporate - Smart Control" />
+  <meta property="og:image" content="../../assets/imagens/logo.svg" />
+  <link rel="shortcut icon" href="./../assets/images/icon.png" />
+  <script src="https://kit.fontawesome.com/a80232805f.js" crossorigin="anonymous"></script>
+  <script src="../../assets/js/funcoesLogin.js"></script>
+  <link rel="stylesheet" type="text/css" href="../../assets/css/style_login.css" />
+  <title>Corporate - Smart Control</title>
+</head>
+<body style="background: url(../assets/images/bg_index_estoque.jpg) no-repeat center center fixed; ">
+  <div class="login">
+    <div class="login-header">
+      <a href="admin/index.php" title="Clique na logotipo para ir para o Painel de Administrador do Sistema.">
+        <img class='logo' style="" src="../../assets/images/logo_login.png">
+      </a>
+    </div>
 
-<body style="background-color: #181818;"> <!-- class="bghome" -->
-  <!-- bloqueio do click direito do mouse -->
-<script>document.oncontextmenu = document.body.oncontextmenu = function() {return false;}</script>
-  <!-- função php que retorna se o usuario teve erro ao logar -->
-<div class="login">
-  <div class="login-header">
-    <br>
-    <a href="../index.php"><img class='logo'  style="filter: invert(38%) sepia(88%) saturate(5482%) hue-rotate(209deg) brightness(98%) contrast(112%);"  src="../assets/images/logo.svg"></a>
-    <h3 class="tituloAdmin">ÁREA DOS REPRESENTANTES</h3>
-  </div>
-  <div class="login-form">
-     <?php
-    if(isset($_SESSION['nao_autenticado'])):
-  ?>
-    <div class="notification is-danger" style="font-size:20px; color:#3046c2;"><b>Usuário não cadastrado</b></div>
-  <?php
-    endif;
-    unset($_SESSION['nao_autenticado']);
-  ?>
-  
-    <form action="login.php" method="POST" >
-    <input type="text" name="usuario" autocomplete="off"  placeholder="Usuário"/><br>
-    <input type="password" name="senha" autocomplete="off" placeholder="Senha"/>
-    <br>
-    <input type="hidden" name="cor" autocomplete="off" placeholder="cor" value="dark" />
+    <div class="login-form" >
+      <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+          <div class="row g-lg-5 py-5">
+              <div class="col-md-10 mx-auto col-lg-6">
+                  <span id="login_error"></span>
+                  <form id="login" method="POST" autocomplete="off">
+                            <p>hostinger:    301a20afc38dfd0866ac528ba06570f2</p>
+                          <input type="email" class="" id="user_email" placeholder="Email" name="user_email" autocomplete="off" required>
+                          <label for="user_email"></label>
+                          <input type="password" class="form-control" id="user_password" placeholder="Senha" name="user_password" autocomplete="off" required>
+                          <label for="user_password"></label>
+                          <input type="text" class="" id="user_token" placeholder="Token" name="user_token" autocomplete="on" value="<?php if(isset($_COOKIE['token'])){ echo $_COOKIE['token']; }?>" required>
+                          <label for="user_token"></label>
+                          <button class="btnlogar" id="login_button" type="submit">Login</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div></div>
 
-    <button type="submit" id="btnhome" type="button" class="btnlogar m-b-16 ">Entrar</button>
-  </div></form></div>
-
-  </body>
+</body>
 </html>
+<!-- bloqueio do click direito do mouse -->
+<script>
+  document.oncontextmenu = document.body.oncontextmenu = function() {
+    return false;
+  }
+</script>
 
 
- 
+<script>
 
+function _(element)
+{
+    return document.getElementById(element);
+}
+
+check_login();
+
+function check_login()
+{
+    fetch('../../assets/functions/chat/backend/check_login.php').then(function(response){
+
+        return response.json();
+
+    }).then(function(responseData){
+
+        if(responseData.user_name && responseData.image)
+        {
+            window.location.href = 'login.php';
+        }
+
+    });
+}
+
+
+
+
+_('login').onsubmit = function(event){
+    event.preventDefault();
+}
+
+_('login_button').onclick = function(){
+
+    var form_data = new FormData(_('login'));
+
+    _('login_button').disabled = true;
+
+    _('login_button').innerHTML = 'Aguarde...';
+
+    fetch('../../assets/functions/chat/backend/login.php', {
+
+        method:"POST",
+
+        body:form_data
+
+    }).then(function(response){
+
+        return response.json();
+
+    }).then(function(responseData){
+
+        _('login_button').disabled = false;
+
+        _('login_button').innerHTML = 'Login';
+
+        if(responseData.error != '')
+        {
+            var error = '<div class="alert alert-danger"><ul>'+responseData.error+'</ul></div>';
+            _('login_error').innerHTML = error;
+        }
+        else
+        {
+            
+            window.location.href = 'login.php';
+        }
+
+        setTimeout(function(){
+
+            _('login_error').innerHTML = '';
+
+        }, 10000);
+
+    });
+
+}
+
+let url = window.location.href;
+
+let params = (new URL(url)).searchParams;
+
+if(params.get('msg'))
+{
+    let param_val = params.get('msg');
+    if(param_val == 'success')
+    {
+        _('login_error').innerHTML = '<div class="alert alert-success">Your Email Successfully Verified, now you can login</div>';
+    }
+    else
+    {
+        _('login_error').innerHTML = '<div class="alert alert-info">Wrong URL</div>';
+    }
+
+    setTimeout(function(){
+        window.location.href = 'index.php';
+    }, 5000);
+}
+
+
+
+
+</script>

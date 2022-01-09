@@ -43,7 +43,7 @@ $usuario = $_SESSION['nome'];
       $lote = $_GET['lote'];
       $quantidade = $_GET['quantidade'];
       $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
-      $sql = $pdo->prepare("INSERT INTO retiradas_$usuario (usuario, produto, tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, lote, quantidade, data_atual) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())");
+      $sql = $pdo->prepare("INSERT INTO retiradas_$usuario (usuario, produto, tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, lote, quantidade, data_atual) VALUES (?,?,?,?,?,?,?,?,?,?,?,date('now'))");
       $sql->execute(array($usuario, $produto, $tipo_produto, $genero, $imagem, $referencia, $cor, $tamanho, $codigo_barra,$lote, $quantidade));
       
 

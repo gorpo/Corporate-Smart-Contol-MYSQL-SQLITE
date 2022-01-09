@@ -100,6 +100,18 @@ foreach($info as $key => $row){
 				  `data` datetime NOT NULL
 			    );");
 			    $sql->execute();
+
+			    //CRIA A TABELA DE INFORMACOES DO ESTOQUE
+			    $pdo = new PDO('sqlite:../../databases/'.$row['email_cliente'].'.db');
+			    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			    $sql = $pdo->prepare("CREATE TABLE  IF NOT EXISTS `informacoes_estoque` (
+				  `id` INTEGER PRIMARY KEY   AUTOINCREMENT,
+				  `informacao` varchar(999) NOT NULL,
+				  `confirmacao` varchar(999) NOT NULL,
+				  `status` varchar(999) NOT NULL,
+				  `data` datetime NOT NULL
+			    );");
+			    $sql->execute();
 			    
 
 			    //CRIA A TABELA DE LOGIN REPRESENTANTES

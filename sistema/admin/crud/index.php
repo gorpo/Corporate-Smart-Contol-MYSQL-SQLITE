@@ -493,7 +493,7 @@ function produtos_em_baixa() {
 
   <?php  
     $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
-  $sql = 'SELECT * FROM informacoes ORDER BY informacao ASC';
+  $sql = 'SELECT * FROM informacoes_estoque ORDER BY informacao ASC';
   foreach($pdo->query($sql)as $row){
 
   if($row['confirmacao'] == 'pendente'){

@@ -41,7 +41,6 @@ foreach($pdo->query($sql)as $row){
 
 
 
-
 if(isset($_GET['id_confirmacao'])){
   $id = $_GET['id_confirmacao'];
   $informacao= $_GET['informacao'];
@@ -50,7 +49,7 @@ if(isset($_GET['id_confirmacao'])){
 
   $pdo = new PDO('sqlite: ../../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=now() WHERE id=:id";
+  $sql = "UPDATE informacoes set informacao=:informacao,confirmacao=:confirmacao, status=:status , data=date('now') WHERE id=:id";
   $q = $pdo->prepare($sql);
   $q->bindParam(':informacao', $informacao);
   $q->bindParam(':confirmacao', $confirmacao);
@@ -297,7 +296,7 @@ $info = null;
       //-------------------sendo: quantidade,id e o codigo de barras para retornar o produto na tela
       echo '<form  action="reduz_estoque_bip_quantidade.php"  >';
       echo '<label for="quantidade" >Quantidade:</label><br>';
-      echo '<input class="input100quantidade" type="number" id="quantidade" name="quantidade" min="1" max="999" value="1">';//envia a quantidade para reduzir do estoque
+      echo '<input class="input100quantidade" type="number" id="quantidade" name="quantidade" min="1" max="999" value="0">';//envia a quantidade para reduzir do estoque
       echo '<input type="hidden" id="id" name="id" value="'.$row['id'].'">'; //envia a id - OBS: o input esta escondido(hidden)
       echo '<input type="hidden" id="usuario" name="usuario" value="'.$usuario.'">'; //envia  usuario
       echo '<input type="hidden" id="produto" name="produto" value="'.$row['produto'].'">'; //envia  produto

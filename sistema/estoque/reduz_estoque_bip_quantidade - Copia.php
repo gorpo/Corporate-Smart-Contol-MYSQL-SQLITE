@@ -48,7 +48,7 @@ $usuario = $_SESSION['nome'];
       
 
       //volta para a pagina após executar as funçoes
-      header("Location: pesquisa_sku.php?buscar=$buscar");     
+      header("Location: bip_quantidade.php?buscar=$buscar");     
 } 
 
 

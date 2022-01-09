@@ -30,6 +30,7 @@
               <div class="col-md-10 mx-auto col-lg-6">
                   <span id="login_error"></span>
                   <form id="login" method="POST" autocomplete="off">
+                            <p>hostinger:    301a20afc38dfd0866ac528ba06570f2</p>
                           <input type="email" class="" id="user_email" placeholder="Email" name="user_email" autocomplete="off" required>
                           <label for="user_email"></label>
                           <input type="password" class="form-control" id="user_password" placeholder="Senha" name="user_password" autocomplete="off" required>

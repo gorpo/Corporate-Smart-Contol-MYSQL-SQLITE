@@ -4,9 +4,8 @@ if(!$_SESSION['nome']) {
   header('Location: index.php');
   exit();
 }
-//inclui o arquivo de conexao com banco de dados
-include('../../databases/conexao.php');
-require '../../databases/database.php';
+
+require '../../../databases/conexao_mysql.php';
 
 $usuario = $_SESSION['nome'];
 $representante =  $_SESSION['nome'];
@@ -32,7 +31,7 @@ $representante = $_GET['representante'];
 
 
 //seta os itens com fetchall
-$pdo = Database::conectar();
+$pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
 $sth = $pdo->prepare("SELECT * FROM produtos WHERE id= '$idprod'");
 $sth->execute();
 $items = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -81,7 +80,7 @@ echo '<div id="snackbar">Produto adicionado no carrinho..</div>
 
 //------CRIA A TABELA DA COMPRA
   $nome_db = date('Y_m_d_H');        
-  $pdo = Database::conectar();
+  $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $sql = "CREATE TABLE IF NOT EXISTS `carrinho_representante_$representante` (
     `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -139,7 +138,7 @@ if (isset($_GET['sair'])) {
      }
    }
 //------INSERE OS DADOS DO PEDIDO DO REPRESETANTE NA TABELA CRIADA
-$pdo = Database::conectar();
+$pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "INSERT INTO carrinho_representante_$representante  (produto,tipo_produto, genero, imagem, referencia, cor, tamanho, codigo_barra, valor, lote, quantidade, pago, data) VALUES(?,?,?,?,?,?,?,?,?,?,?,'nao',NOW())";
 $q = $pdo->prepare($sql);
@@ -181,8 +180,8 @@ window.setTimeout(function () {
   <meta property="og:title" content="VOPEN"/>
   <meta property="og:url" content="https://vopen.com.br/"/>
   <meta property="og:description" content="Sistema de administração VOPEN"/>
-  <meta property="og:image" content="../../assets/images/logo.svg"/>
-  <link rel="shortcut icon" href="../../assets/images/icon.png" />
+  <meta property="og:image" content="../../../assets/images/logo.svg"/>
+  <link rel="shortcut icon" href="../../../assets/images/icon.png" />
   <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/a80232805f.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -205,7 +204,7 @@ window.setTimeout(function () {
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="#"><img class="" src="../../assets/images/logo.svg" height="30" ></a>
+          <a class="navbar-brand" href="#"><img class="" src="../../../assets/images/logo.svg" height="30" ></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -327,7 +326,7 @@ window.setTimeout(function () {
            echo '     
             <div class="product">
               <div class="product-image">
-                <img src="../../assets/images/produtos/'.$_SESSION['carrinho'][$key]['imagem'].'">
+                <img src="../../../assets/images/produtos/'.$_SESSION['carrinho'][$key]['imagem'].'">
               </div>
               <div class="product-details">
                 <div class="product-description">'.$_SESSION['carrinho'][$key]['produto'].'</div>
@@ -495,12 +494,12 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_fpu'";
                     foreach($pdo->query($sql)as $row){
                     echo '
                       <div class="col-sm-4" style="margin-bottom: 100px;">
-                      <img src="../../assets/images/produtos/'.$row['imagem'].'"  class="img-fluid">
+                      <img src="../../../assets/images/produtos/'.$row['imagem'].'"  class="img-fluid">
                       <div >
                       <b>Produto: </b>'.$row['produto'].'<br>
                       <b>Referência: </b>'.$row['referencia'].'<br>
@@ -539,7 +538,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_repelente'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -583,7 +582,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_termica'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -627,7 +626,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'camisa_ciclismo'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -671,7 +670,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'bermuda'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -715,7 +714,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'calca'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -759,7 +758,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'jaqueta'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -803,7 +802,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'lycra'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -847,7 +846,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'neolycra'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -892,7 +891,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_adulto'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -937,7 +936,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_homologado'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -982,7 +981,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_eaf'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1026,7 +1025,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_adulto_kite'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1076,7 +1075,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'float_kids'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1123,7 +1122,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids_homologado'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1167,7 +1166,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'colete_kids'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1212,7 +1211,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
                 <div class="row">
                   <?php  
                   
-                    $pdo = Database::conectar();
+                    $pdo = new PDO('sqlite:../../../databases/'.$_SESSION['email_cliente'].'.db');
                     $sql = "SELECT * FROM produtos WHERE tipo_produto = 'sapatilha'";
                     foreach($pdo->query($sql)as $row){
                     echo '
@@ -1265,7 +1264,7 @@ echo "<script>window.onscroll = function () { window.scrollTo(0, 0); };</script>
         <div class="row">
           <div class="col-md-12">
             <div class="inner-content">
-              <p>Copyright &copy; 2021 VOPEN</p>
+              <p>Copyright &copy; 2022 Corporate Smart Control</p>
             </div>
           </div>
         </div>
